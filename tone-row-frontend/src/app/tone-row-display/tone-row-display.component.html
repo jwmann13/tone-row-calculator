@@ -1,0 +1,6 @@
+<div *ngIf="toneRow">
+    <span *ngFor="let note of toneRow.noteOrder">
+        {{!note.accidental ? note.naturalName : displayFlat ? note.flatName : note.sharpName}}
+    </span>
+    <button (click)="toggleFlats()">{{displayFlat ? "Show Flats" : "Show Sharps"}}</button>
+</div>
