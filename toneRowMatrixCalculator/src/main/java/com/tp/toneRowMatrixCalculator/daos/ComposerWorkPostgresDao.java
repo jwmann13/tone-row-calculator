@@ -1,5 +1,6 @@
 package com.tp.toneRowMatrixCalculator.daos;
 
+import com.tp.toneRowMatrixCalculator.models.ComposerWork;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,18 +19,17 @@ public class ComposerWorkPostgresDao implements ComposerWorkDao {
 
     @Override
     public boolean exists(Integer workId, Integer composerId) {
-        Integer[] ids = getComposerWork(workId, composerId);
-        if (ids == null) return false;
-        for (Integer id :
-                ids) {
-            if (id == null) return false;
+        List<ComposerWork> results = getComposerWork(workId, composerId);
+        if (results == null) return false;
+        for (ComposerWork cw : results) {
+            if (cw == null) return false;
         }
         return true;
     }
 
     @Override
-    public Integer[] getComposerWork(Integer workId, Integer composerId)  {
-        List<Integer[]> results = template.query("SELECT \"workId\", \"composerId\" " +
+    public List<ComposerWork> getComposerWork(Integer workId, Integer composerId)  {
+        List<ComposerWork> results = template.query("SELECT \"workId\", \"composerId\" " +
                         "FROM \"composerWorks\" " +
                         "WHERE \"workId\"=? AND \"composerId\"=?;",
                 new ComposerWorkMapper(),
@@ -39,10 +39,22 @@ public class ComposerWorkPostgresDao implements ComposerWorkDao {
 
         if (results.isEmpty()) {
             return null;
-        } else if (results.size() == 1) {
-            return results.get(0);
         } else {
+            return results;
+        }
+    }
+
+    @Override
+    public List<ComposerWork> getComposerWorkByWorkId(Integer workId) {
+        List<ComposerWork> results = template.query("SELECT * FROM \"composerWorks\" WHERE \"workId\" = ?;",
+                new ComposerWorkMapper(),
+                workId
+        );
+
+        if (results.isEmpty()) {
             return null;
+        } else {
+            return results;
         }
     }
 
@@ -56,14 +68,14 @@ public class ComposerWorkPostgresDao implements ComposerWorkDao {
         );
     }
 
-    private static class ComposerWorkMapper implements RowMapper<Integer[]> {
+    private static class ComposerWorkMapper implements RowMapper<ComposerWork> {
 
         @Override
-        public Integer[] mapRow(ResultSet resultSet, int i) throws SQLException {
-            Integer[] ids = new Integer[2];
-            ids[0] = resultSet.getInt("workId");
-            ids[1] = resultSet.getInt("composerId");
-            return ids;
+        public ComposerWork mapRow(ResultSet resultSet, int i) throws SQLException {
+            ComposerWork mapped = new ComposerWork();
+            mapped.setWorkId(resultSet.getInt("workId"));
+            mapped.setComposerId(resultSet.getInt("composerId"));
+            return mapped;
         }
     }
 }

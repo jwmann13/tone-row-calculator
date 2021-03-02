@@ -1,10 +1,7 @@
 package com.tp.toneRowMatrixCalculator.controllers;
 
 import com.tp.toneRowMatrixCalculator.exceptions.InvalidIdException;
-import com.tp.toneRowMatrixCalculator.models.Composer;
-import com.tp.toneRowMatrixCalculator.models.Matrix;
-import com.tp.toneRowMatrixCalculator.models.ToneRow;
-import com.tp.toneRowMatrixCalculator.models.Work;
+import com.tp.toneRowMatrixCalculator.models.*;
 import com.tp.toneRowMatrixCalculator.services.MatrixService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -12,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -108,6 +106,17 @@ public class MatrixController {
         Map<Integer, Composer> toReturn;
         try {
             toReturn = service.getAllComposers();
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        return ResponseEntity.ok(toReturn);
+    }
+
+    @GetMapping(value = "/composerwork", params = {"id"})
+    public ResponseEntity getComposerWork(@RequestParam Integer id) {
+        List<ComposerWork> toReturn;
+        try {
+            toReturn = service.getComposerWorksByWorkId(id);
         } catch (EmptyResultDataAccessException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

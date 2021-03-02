@@ -24,6 +24,9 @@ public class MatrixService {
     @Autowired
     ComposerDao composerDao;
 
+    @Autowired
+    ComposerWorkDao composerWorkDao;
+
     // GETs for ToneRows and Matrices
     public Map<Integer, Matrix> getAllMatrices() {
         Map<Integer, ToneRow> allToneRows = getAllToneRows();
@@ -169,6 +172,12 @@ public class MatrixService {
         } else {
             toReturn = composerDao.createComposer(composerName);
         }
+        return toReturn;
+    }
+
+    public List<ComposerWork> getComposerWorksByWorkId(Integer id) {
+        List<ComposerWork> toReturn;
+        toReturn = composerWorkDao.getComposerWorkByWorkId(id);
         return toReturn;
     }
 }
