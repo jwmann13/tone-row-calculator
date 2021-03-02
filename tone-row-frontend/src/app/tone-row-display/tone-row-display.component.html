@@ -1,6 +1,7 @@
 <div *ngIf="toneRow" class="d-flex justify-content-around">
     <div>
-        {{workTitle}}
+        {{workTitle}} by
+        {{composers.join(", ")}}
     </div>
     <div class="">
         <span *ngFor="let note of toneRow.noteOrder">

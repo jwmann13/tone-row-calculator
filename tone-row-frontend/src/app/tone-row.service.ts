@@ -26,7 +26,7 @@ export class ToneRowService {
   getAllToneRows(): Observable<ToneRowMap | null> {
     return this.http.get<ToneRowMap | null>(this.baseURL + "/tonerow", this.httpProperties)
     .pipe(
-      tap(x => console.log(x)),
+      tap(x => x),
       catchError(err => {
         console.log(err);
         return of(null);
@@ -37,7 +37,7 @@ export class ToneRowService {
   getToneRow(toneRowId: number): Observable<ToneRow | null> {
     return this.http.get<ToneRow>(this.baseURL + `/tonerow?id=${toneRowId}`, this.httpProperties)
     .pipe(
-      tap(x => console.log(x)),
+      tap(x => x),
       catchError(err => {
         console.log(err);
         return of(null);
@@ -48,7 +48,7 @@ export class ToneRowService {
   getMatrix(toneRowId: number): Observable<Matrix | null> {
     return this.http.get<Matrix>(this.baseURL + `/matrix?id=${toneRowId}`, this.httpProperties)
     .pipe(
-      tap(x => console.log(x)),
+      tap(x => x),
       catchError(err => {
         console.log(err);
         return of(null);

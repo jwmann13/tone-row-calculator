@@ -17,9 +17,9 @@ export class ToneRowListComponent implements OnInit {
   ngOnInit(): void {
     this.service.getAllToneRows().subscribe(data => {
       if (data) {
-        console.log(data)
+        // console.log(data)
         for (let key of Object.keys(data)) {
-          console.log(key, data[key])
+          // console.log(key, data[key])
           this.allToneRows.push(data[key]);
         }
       } else {
