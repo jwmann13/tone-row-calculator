@@ -2,11 +2,14 @@ package com.tp.toneRowMatrixCalculator.daos;
 
 import com.tp.toneRowMatrixCalculator.models.Matrix;
 import com.tp.toneRowMatrixCalculator.models.ToneRow;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
 
-@Repository
+@Component
+@Profile({"production", "daoTesting", "serviceTesting"})
 public interface ToneRowDao {
 
     Map<Integer, ToneRow> getAllToneRows();

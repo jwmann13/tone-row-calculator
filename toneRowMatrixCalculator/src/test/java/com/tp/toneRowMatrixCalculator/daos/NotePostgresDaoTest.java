@@ -1,7 +1,7 @@
 package com.tp.toneRowMatrixCalculator.daos;
 
 import com.tp.toneRowMatrixCalculator.models.Note;
-import com.tp.toneRowMatrixCalculator.models.ToneRow;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,15 +9,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.Map;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("daoTesting")
-public class ToneRowPostgresDaoTest {
+public class NotePostgresDaoTest {
     @Autowired
-    ToneRowPostgresDao toTest;
+    NotePostgresDao toTest;
 
     @Autowired
     JdbcTemplate template;
@@ -37,43 +37,43 @@ public class ToneRowPostgresDaoTest {
                 "VALUES ('0', '0', '1'), ('1', '1', '1'), ('2', '2', '1'), ('3', '3', '1'),\n" +
                 "('4', '4', '1'), ('5', '5', '1'), ('6', '6', '1'), ('7', '7', '1'),\n" +
                 "('8', '8', '1'), ('9', '9', '1'), ('10', '10', '1'), ('11', '11', '1');");
+        template.update("INSERT INTO \"toneRows\" (\"workId\") VALUES ('1');");
     }
 
-    // getAllToneRows()
     @Test
-    public void getAllToneRowsTest() {
-        Map<Integer, ToneRow> returned = toTest.getAllToneRows();
-        Note[] notes = returned.get(1).getNoteOrder();
+    public void createNoteTest() {
+        Note returned = toTest.createNote(0, 0, 2);
 
         assertNotNull(returned);
-        assertEquals(1, returned.size());
-        assertEquals(1, returned.get(1).getToneRowId());
-        assertNull(notes);
-    }
-    //TODO: more get toneRow tests
-    
-    // getToneRowById()
-    @Test
-    public void getToneRowByIdTest() {
-        ToneRow returned = toTest.getToneRowById(1);
-        Note[] notes = returned.getNoteOrder();
-
-        assertNotNull(returned);
-        assertEquals(1, returned.getToneRowId());
-        assertNull(notes);
-    }
-    //TODO: more get toneRow tests
-    
-    // createToneRow()
-    @Test
-    public void createToneRowGoldenPathTest() {
-        ToneRow returned = toTest.createToneRow(1);
-
+        assertEquals(0, returned.getPitchClass());
+        assertEquals(0, returned.getOrderIndex());
         assertEquals(2, returned.getToneRowId());
-        assertEquals(1, returned.getWorkId());
-        assertNull(returned.generateMatrix());
-        assertNull(returned.getNoteOrder());
+        assertEquals(13, returned.getNoteId());
+        assertEquals("C", returned.getNaturalName());
+        assertNull(returned.getSharpName());
+        assertNull(returned.getFlatName());
+        assertFalse(returned.isAccidental());
     }
-    //TODO: more create toneRow tests with bad data/arguments
 
+    @Test
+    public void getNotesForToneRowTest() {
+        List<Note> returned = toTest.getNotesForToneRow(1);
+
+        assertNotNull(returned);
+        assertEquals(12, returned.size());
+        assertEquals(0, returned.get(0).getOrderIndex());
+        assertEquals(1, returned.get(0).getToneRowId());
+        assertEquals(1, returned.get(0).getNoteId());
+        assertEquals("C", returned.get(0).getNaturalName());
+        assertNull(returned.get(0).getSharpName());
+        assertNull(returned.get(0).getFlatName());
+        assertFalse(returned.get(0).isAccidental());
+    }
+
+    @Test
+    public void getNotesForToneRowTestNoNotes() {
+        List<Note> noNotes = toTest.getNotesForToneRow(2);
+
+        assertTrue(noNotes.isEmpty());
+    }
 }

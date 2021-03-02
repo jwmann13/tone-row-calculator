@@ -13,7 +13,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@ActiveProfiles({"daoTesting"})
+@ActiveProfiles("daoTesting")
 public class ComposerPostgresDaoTest {
     @Autowired
     ComposerPostgresDao toTest;

@@ -44,6 +44,7 @@ public class NotePostgresDao implements NoteDao {
             NoteInfo mappedInfo = NoteInfo.getByValue(resultSet.getInt("pitchClass"));
 
             mappedNote.setNoteId(resultSet.getInt("noteId"));
+            mappedNote.setToneRowId(resultSet.getInt("toneRowId"));
             mappedNote.setNoteInfo(mappedInfo);
             mappedNote.setOrderIndex(resultSet.getInt("noteOrder"));
 

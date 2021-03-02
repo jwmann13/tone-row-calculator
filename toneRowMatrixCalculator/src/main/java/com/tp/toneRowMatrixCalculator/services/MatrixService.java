@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-@Profile({"production", "serviceTesting"})
+@Profile({"production", "daoTesting", "serviceTesting"})
 public class MatrixService {
     @Autowired
     ToneRowDao toneRowDao;
