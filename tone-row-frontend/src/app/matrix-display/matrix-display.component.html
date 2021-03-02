@@ -1,5 +1,21 @@
-<div *ngIf="matrix" class="container">
-    <div *ngFor="let row of matrix.matrix" class="row">
-        <span *ngFor="let pitchClass of row" class="col-1">{{pitchClass}} </span>
-    </div>
-</div>
+<table *ngIf="matrix" class="table w-75 m-auto">
+    <thead>
+        <tr>
+            <th></th>
+            <th *ngFor="let p of primeOrder">{{p}}</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let row of matrix.matrix; index as i">
+            <th>{{inversionOrder[i]}}</th>
+            <td *ngFor="let pitchClass of row">{{pitchClass}} </td>
+            <th>{{retrogradeInversionOrder[i]}}</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th *ngFor="let r of retrogradeOrder">{{r}}</th>
+            <th></th>
+        </tr>
+    </tbody>
+</table>

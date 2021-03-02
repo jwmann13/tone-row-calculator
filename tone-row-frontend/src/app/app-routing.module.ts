@@ -8,10 +8,7 @@ const routes: Routes = [{
   path: "",
   component: ToneRowListComponent
 }, {
-  path: "tonerow",
-  component: ToneRowDisplayComponent
-}, {
-  path: "matrix",
+  path: "matrix/:toneRowId",
   component: MatrixDisplayComponent
 }];
 

@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ComposerWork, ComposerWorkService } from '../composer-work.service';
+import { ComposerWorkService } from '../composer-work.service';
 import { ToneRow } from '../models/ToneRow';
 
 @Component({
-  selector: 'tone-row-display',
+  selector: '[tone-row-display]',
   templateUrl: './tone-row-display.component.html',
   styleUrls: ['./tone-row-display.component.scss']
 })
@@ -24,23 +24,24 @@ export class ToneRowDisplayComponent implements OnInit {
   ngOnInit(): void {
     // TODO: Get rid of this triangle of death
     if (this.toneRow && this.toneRow.workId) {
-      this.service.getWorkById(this.toneRow.workId)
+      // 
+      const wObs = this.service.getWorkById(this.toneRow.workId)
         .subscribe(work => {
           if (work) {
             this.workTitle = work.title
             if (work.workId) {
-              this.service.getComposerWork(work.workId)
+              this.service.getComposerWorkByWorkId(work.workId)
                 .subscribe(composerWorks => {
                   console.log(composerWorks);
                   if (composerWorks) {
                     for (let cw of composerWorks) {
-                      this.service.getComposer(cw.composerId)
-                      .subscribe(composer => {
-                        console.log(composer);
-                        if (composer) {
-                          this.composers.push(composer.name);
-                        }
-                      })
+                      this.service.getComposerById(cw.composerId)
+                        .subscribe(composer => {
+                          console.log(composer);
+                          if (composer) {
+                            this.composers.push(composer.name);
+                          }
+                        })
                     }
                   }
                 });

@@ -1,1 +1,12 @@
-<tone-row-display *ngFor="let tr of allToneRows" [toneRow]="tr" class="row align-items-center"></tone-row-display>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Work</th>
+            <th scope="col">Tone Row</th>
+            <th scope="col">Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let tr of allToneRows" tone-row-display [toneRow]="tr"></tr>
+    </tbody>
+</table>

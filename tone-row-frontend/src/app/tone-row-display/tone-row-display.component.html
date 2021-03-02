@@ -1,12 +1,14 @@
-<div *ngIf="toneRow" class="d-flex justify-content-around">
-    <div>
-        {{workTitle}} by
-        {{composers.join(", ")}}
-    </div>
-    <div class="">
+<td *ngIf="toneRow">
+    {{workTitle}} by
+    {{composers.join(", ")}}
+</td>
+<td *ngIf="toneRow" class="">
+    <a href="/matrix/{{toneRow.toneRowId}}">
         <span *ngFor="let note of toneRow.noteOrder">
             {{!note.accidental ? note.naturalName : displayFlat ? note.flatName : note.sharpName}}
         </span>
-    </div>
+    </a>
+</td>
+<td *ngIf="toneRow">
     <button (click)="toggleFlats()" class="btn btn-primary">{{displayFlat ? "Show #" : "Show &#9837;"}}</button>
-</div>
+</td>

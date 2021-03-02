@@ -112,17 +112,6 @@ public class MatrixController {
         return ResponseEntity.ok(toReturn);
     }
 
-    @GetMapping(value = "/composerwork", params = {"id"})
-    public ResponseEntity getComposerWork(@RequestParam Integer id) {
-        List<ComposerWork> toReturn;
-        try {
-            toReturn = service.getComposerWorksByWorkId(id);
-        } catch (EmptyResultDataAccessException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-        return ResponseEntity.ok(toReturn);
-    }
-
     @GetMapping(value = "/composer", params = {"id"})
     public ResponseEntity getComposerById(@RequestParam Integer id) {
         Composer toReturn;
@@ -139,6 +128,17 @@ public class MatrixController {
         Composer toReturn;
         try {
             toReturn = service.getComposerByName(name);
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        return ResponseEntity.ok(toReturn);
+    }
+
+    @GetMapping(value = "/composerwork", params = {"id"})
+    public ResponseEntity getComposerWork(@RequestParam Integer id) {
+        List<ComposerWork> toReturn;
+        try {
+            toReturn = service.getComposerWorksByWorkId(id);
         } catch (EmptyResultDataAccessException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

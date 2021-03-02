@@ -43,7 +43,7 @@ export class ComposerWorkService {
     );
   }
 
-  getComposerWork(workId: number): Observable<ComposerWork[] | null> {
+  getComposerWorkByWorkId(workId: number): Observable<ComposerWork[] | null> {
     return this.http.get<ComposerWork[] | null>(this.baseURL + `/composerwork?id=${workId}`, this.httpProperties)
     .pipe(
       tap(x => x),
@@ -54,10 +54,10 @@ export class ComposerWorkService {
     );
   }
 
-  getComposer(composerId: number): Observable<Composer | null> {
+  getComposerById(composerId: number): Observable<Composer | null> {
     return this.http.get<Composer | null>(this.baseURL + `/composer?id=${composerId}`, this.httpProperties)
     .pipe(
-      tap(x => console.log(x)),
+      tap(x => x),
       catchError(err => {
         console.log(err);
         return of(null);
