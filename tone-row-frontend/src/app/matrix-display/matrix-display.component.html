@@ -1,0 +1,5 @@
+<div *ngIf="matrix" class="container">
+    <div *ngFor="let row of matrix.matrix" class="row">
+        <span *ngFor="let pitchClass of row" class="col-1">{{pitchClass}} </span>
+    </div>
+</div>

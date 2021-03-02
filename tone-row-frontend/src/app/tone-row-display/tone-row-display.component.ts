@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ComposerWorkService } from '../composer-work.service';
 import { ToneRow } from '../models/ToneRow';
-import { ToneRowService } from '../tone-row.service';
 
 @Component({
   selector: 'tone-row-display',
@@ -10,15 +10,23 @@ import { ToneRowService } from '../tone-row.service';
 export class ToneRowDisplayComponent implements OnInit {
 
   @Input() toneRow: ToneRow | null;
+  @Input() workTitle: string | null;
   displayFlat: boolean;
 
-  constructor(private service: ToneRowService) {
+  constructor(private service: ComposerWorkService) {
     this.toneRow = null;
+    this.workTitle = null;
     this.displayFlat = true;
    }
 
   ngOnInit(): void {
-    this.service.getToneRow(1).subscribe(data => this.toneRow = data);
+    if (this.toneRow && this.toneRow.workId) {
+      this.service.getWorkById(this.toneRow.workId).subscribe(data => {
+        if (data) {
+          this.workTitle = data.title
+        }
+      });
+    }
   }
 
   toggleFlats() {
