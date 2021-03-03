@@ -2,13 +2,27 @@
     {{workTitle}} by
     {{composers.join(", ")}}
 </td>
-<td *ngIf="toneRow" class="">
-    <a href="/matrix/{{toneRow.toneRowId}}">
+<td *ngIf="toneRow" [ngSwitch]="displaying" class="">
+    <a href="/matrix/{{toneRow.toneRowId}}" *ngSwitchCase="1">
         <span *ngFor="let note of toneRow.noteOrder">
-            {{!note.accidental ? note.naturalName : displayFlat ? note.flatName : note.sharpName}}
+            {{!note.accidental ? note.naturalName : note.flatName }}
+        </span>
+    </a>
+    <a href="/matrix/{{toneRow.toneRowId}}" *ngSwitchCase="2">
+        <span *ngFor="let note of toneRow.noteOrder">
+            {{!note.accidental ? note.naturalName : note.sharpName }}
+        </span>
+    </a>
+    <a href="/matrix/{{toneRow.toneRowId}}" *ngSwitchCase="3">
+        <span *ngFor="let note of toneRow.noteOrder">
+            {{note.pitchClass}}
         </span>
     </a>
 </td>
 <td *ngIf="toneRow">
-    <button (click)="toggleFlats()" class="btn btn-primary">{{displayFlat ? "Show #" : "Show &#9837;"}}</button>
+    <div class="btn-group">
+        <button id="FlatBtn" (click)="toggleDisplay(1)" class="btn btn-primary" [disabled]="displaying === 1">&#9837;</button>
+        <button id="SharpBtn" (click)="toggleDisplay(2)" class="btn btn-primary" [disabled]="displaying === 2">#</button>
+        <button id="PitchClassBtn" (click)="toggleDisplay(3)" class="btn btn-primary" [disabled]="displaying === 3">0</button>
+    </div>
 </td>

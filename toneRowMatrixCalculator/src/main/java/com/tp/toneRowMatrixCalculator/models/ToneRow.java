@@ -68,9 +68,10 @@ public class ToneRow {
     private Matrix generateRetrogradeInversions(Matrix matrix) {
         Map<String, ToneRow> toReturn = new HashMap<>();
         List<String> labels = new ArrayList<>();
+        int firstPc = noteOrder[0].getPitchClass();
 
         for (Note n : noteOrder) {
-            ToneRow retrogradeInvertedRow = invert().transpose(n.getPitchClass()).retrograde();
+            ToneRow retrogradeInvertedRow = invert().transpose(((n.getPitchClass() - firstPc) + 12) % 12).retrograde();
             String label = "RI" + retrogradeInvertedRow.noteOrder[0].getPitchClass();
             toReturn.put(label, retrogradeInvertedRow);
             labels.add(label);
@@ -85,9 +86,10 @@ public class ToneRow {
     private Matrix generateRetrogrades(Matrix matrix) {
         Map<String, ToneRow> toReturn = new HashMap<>();
         List<String> labels = new ArrayList<>();
+        int firstPc = invert().noteOrder[0].getPitchClass();
 
         for (Note n : invert().noteOrder) {
-            ToneRow retrogradeRow = transpose(n.getPitchClass()).retrograde();
+            ToneRow retrogradeRow = transpose(((n.getPitchClass() - firstPc) + 12) % 12).retrograde();
             String label = "R" + retrogradeRow.noteOrder[0].getPitchClass();
             toReturn.put(label, retrogradeRow);
             labels.add(label);
@@ -102,10 +104,11 @@ public class ToneRow {
     private Matrix generateInversions(Matrix matrix) {
         Map<String, ToneRow> toReturn = new HashMap<>();
         List<String> labels = new ArrayList<>();
+        int firstPc = noteOrder[0].getPitchClass();
 
         for (Note n : noteOrder) {
             String label = "I" + n.getPitchClass();
-            ToneRow invertedRow = invert().transpose(n.getPitchClass());
+            ToneRow invertedRow = invert().transpose(((n.getPitchClass() - firstPc) + 12) % 12);
             toReturn.put(label, invertedRow);
             labels.add(label);
         }
@@ -119,10 +122,11 @@ public class ToneRow {
     private Matrix generatePrimes(Matrix matrix) {
         Map<String, ToneRow> toReturn = new HashMap<>();
         List<String> labels = new ArrayList<>();
+        int firstPc = invert().noteOrder[0].getPitchClass();
 
         for (Note n : invert().noteOrder) {
             String label = "P" + n.getPitchClass();
-            ToneRow primeRow = transpose(n.getPitchClass());
+            ToneRow primeRow = transpose(((n.getPitchClass() - firstPc) + 12) % 12);
             toReturn.put(label, primeRow);
             labels.add(label);
         }

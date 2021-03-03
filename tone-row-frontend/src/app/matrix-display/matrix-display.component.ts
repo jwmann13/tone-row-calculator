@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router'
-import { Matrix, ToneRowMap } from '../models/Matrix';
+import { Matrix } from '../models/Matrix';
+import { ToneRowDisplayOptions } from '../tone-row-display/tone-row-display.component';
 import { ToneRowService } from '../tone-row.service';
 
 @Component({
@@ -11,9 +12,11 @@ import { ToneRowService } from '../tone-row.service';
 export class MatrixDisplayComponent implements OnInit {
 
   @Input() matrix: Matrix | null;
+  displaying: ToneRowDisplayOptions;
 
   constructor(private service: ToneRowService, private route: ActivatedRoute) {
     this.matrix = null;
+    this.displaying = ToneRowDisplayOptions.FLATS;
   }
 
   ngOnInit(): void {
@@ -24,30 +27,20 @@ export class MatrixDisplayComponent implements OnInit {
     });
   }
 
-  static generateLabelOrder(map: ToneRowMap, noteOrder: number[], primeOrder: string[]): string[] {
-    for (let i = 0; i < noteOrder.length; i++) {
-      for (let key in map) {
-        if (key.slice(1) === noteOrder[i].toString()) {
-          primeOrder.push(key);
-          delete map[key];
-          break;
-        }
-      }
+  toggleDisplay(option: number) {
+    switch (option) {
+      case 1:
+        this.displaying = ToneRowDisplayOptions.FLATS
+        break;
+      case 2:
+        this.displaying = ToneRowDisplayOptions.SHARPS
+        break;
+      case 3:
+        this.displaying = ToneRowDisplayOptions.PITCH_CLASSES
+        break;
+      default:
+        break;
     }
-    return primeOrder;
-  }
-
-  static generateLabelOrderRI(map: ToneRowMap, noteOrder: number[], primeOrder: string[]): string[] {
-    for (let i = 0; i < noteOrder.length; i++) {
-      for (let key in map) {
-        if (key.slice(2) === noteOrder[i].toString()) {
-          primeOrder.push(key);
-          delete map[key];
-          break;
-        }
-      }
-    }
-    return primeOrder;
   }
 
 }
