@@ -5,6 +5,10 @@ export interface Matrix{
     inversions: ToneRowMap;
     retrogrades: ToneRowMap;
     retrogradeInversions: ToneRowMap;
+    primeLabelOrder: string[];
+    inversionLabelOrder: string[];
+    retrogradeLabelOrder: string[];
+    retrogradeInversionLabelOrder: string[];
     matrix: number[][];
 }
 

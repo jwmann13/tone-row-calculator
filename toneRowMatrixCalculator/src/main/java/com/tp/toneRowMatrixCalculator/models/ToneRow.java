@@ -1,6 +1,8 @@
 package com.tp.toneRowMatrixCalculator.models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ToneRow {
@@ -45,10 +47,10 @@ public class ToneRow {
 
         Matrix generated = new Matrix();
 
-        generated.setPrimes(generatePrimes());
-        generated.setInversions(generateInversions());
-        generated.setRetrogrades(generateRetrogrades());
-        generated.setRetrogradeInversions(generateRetrogradeInversions());
+        generated = generatePrimes(generated);
+        generated = generateInversions(generated);
+        generated = generateRetrogrades(generated);
+        generated = generateRetrogradeInversions(generated);
 
         for (int i = 0; i < generated.matrix.length; i++) {
             for (int j = 0; j < generated.matrix[i].length; j++) {
@@ -63,52 +65,72 @@ public class ToneRow {
         return generated;
     }
 
-    private Map<String, ToneRow> generateRetrogradeInversions() {
+    private Matrix generateRetrogradeInversions(Matrix matrix) {
         Map<String, ToneRow> toReturn = new HashMap<>();
+        List<String> labels = new ArrayList<>();
 
         for (Note n : noteOrder) {
             ToneRow retrogradeInvertedRow = invert().transpose(n.getPitchClass()).retrograde();
             String label = "RI" + retrogradeInvertedRow.noteOrder[0].getPitchClass();
             toReturn.put(label, retrogradeInvertedRow);
+            labels.add(label);
         }
 
-        return toReturn;
+        matrix.setRetrogradeInversions(toReturn);
+        matrix.setRetrogradeInversionLabelOrder(labels);
+
+        return new Matrix(matrix);
     }
 
-    private Map<String, ToneRow> generateRetrogrades() {
+    private Matrix generateRetrogrades(Matrix matrix) {
         Map<String, ToneRow> toReturn = new HashMap<>();
+        List<String> labels = new ArrayList<>();
 
         for (Note n : invert().noteOrder) {
             ToneRow retrogradeRow = transpose(n.getPitchClass()).retrograde();
             String label = "R" + retrogradeRow.noteOrder[0].getPitchClass();
             toReturn.put(label, retrogradeRow);
+            labels.add(label);
         }
 
-        return toReturn;
+        matrix.setRetrogrades(toReturn);
+        matrix.setRetrogradeLabelOrder(labels);
+
+        return new Matrix(matrix);
     }
 
-    private Map<String, ToneRow> generateInversions() {
+    private Matrix generateInversions(Matrix matrix) {
         Map<String, ToneRow> toReturn = new HashMap<>();
+        List<String> labels = new ArrayList<>();
 
         for (Note n : noteOrder) {
             String label = "I" + n.getPitchClass();
             ToneRow invertedRow = invert().transpose(n.getPitchClass());
             toReturn.put(label, invertedRow);
+            labels.add(label);
         }
 
-        return toReturn;
+        matrix.setInversions(toReturn);
+        matrix.setInversionLabelOrder(labels);
+
+        return new Matrix(matrix);
     }
 
-    private Map<String, ToneRow> generatePrimes() {
+    private Matrix generatePrimes(Matrix matrix) {
         Map<String, ToneRow> toReturn = new HashMap<>();
+        List<String> labels = new ArrayList<>();
 
         for (Note n : invert().noteOrder) {
             String label = "P" + n.getPitchClass();
             ToneRow primeRow = transpose(n.getPitchClass());
             toReturn.put(label, primeRow);
+            labels.add(label);
         }
 
-        return toReturn;
+        matrix.setPrimes(toReturn);
+        matrix.setPrimeLabelOrder(labels);
+
+        return new Matrix(matrix);
     }
 
     private ToneRow transpose(int value) {

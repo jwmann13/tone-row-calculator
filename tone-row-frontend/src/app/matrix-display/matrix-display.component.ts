@@ -11,17 +11,9 @@ import { ToneRowService } from '../tone-row.service';
 export class MatrixDisplayComponent implements OnInit {
 
   @Input() matrix: Matrix | null;
-  primeOrder: string[];
-  inversionOrder: string[];
-  retrogradeOrder: string[];
-  retrogradeInversionOrder: string[];
 
   constructor(private service: ToneRowService, private route: ActivatedRoute) {
     this.matrix = null;
-    this.primeOrder = [];
-    this.inversionOrder = [];
-    this.retrogradeOrder = [];
-    this.retrogradeInversionOrder = [];
   }
 
   ngOnInit(): void {
@@ -29,35 +21,6 @@ export class MatrixDisplayComponent implements OnInit {
     const matrixId = Number(routeMap.get("toneRowId"));
     this.service.getMatrix(matrixId).subscribe(data => {
       this.matrix = data;
-      if (data && data.matrix) {
-        if (data.primes) {
-          this.primeOrder = MatrixDisplayComponent
-            .generateLabelOrder({...data.primes }, [...data.matrix[0]], [...this.primeOrder]);
-        }
-
-        if (data.inversions) {
-          let inverted: number[] = [];
-          for (let i = 0; i < data.matrix.length; i++) {
-            inverted.push(data.matrix[i][0]);
-          }
-          this.inversionOrder = MatrixDisplayComponent
-            .generateLabelOrder({...data.inversions }, inverted, [...this.inversionOrder]);
-        }
-
-        if (data.retrogrades) {
-          this.retrogradeOrder = MatrixDisplayComponent
-            .generateLabelOrder({...data.retrogrades }, [...data.matrix[11]], [...this.retrogradeOrder]);
-        }
-
-        if (data.retrogradeInversions) {
-          let retrogradeInverted: number[] = [];
-          for (let i = 0; i < data.matrix.length; i++) {
-            retrogradeInverted.push(data.matrix[i][11]);
-          }
-          this.retrogradeInversionOrder = MatrixDisplayComponent
-            .generateLabelOrderRI({...data.retrogradeInversions }, retrogradeInverted, [...this.retrogradeInversionOrder]);
-        }
-      }
     });
   }
 

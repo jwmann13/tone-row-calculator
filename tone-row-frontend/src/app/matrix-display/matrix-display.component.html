@@ -2,19 +2,19 @@
     <thead>
         <tr>
             <th></th>
-            <th *ngFor="let p of primeOrder">{{p}}</th>
+            <th *ngFor="let i of matrix.inversionLabelOrder">{{i}}</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let row of matrix.matrix; index as i">
-            <th>{{inversionOrder[i]}}</th>
+            <th>{{matrix.primeLabelOrder[i]}}</th>
             <td *ngFor="let pitchClass of row">{{pitchClass}} </td>
-            <th>{{retrogradeInversionOrder[i]}}</th>
+            <th>{{matrix.retrogradeLabelOrder[i]}}</th>
         </tr>
         <tr>
             <th></th>
-            <th *ngFor="let r of retrogradeOrder">{{r}}</th>
+            <th *ngFor="let r of matrix.retrogradeInversionLabelOrder">{{r}}</th>
             <th></th>
         </tr>
     </tbody>
