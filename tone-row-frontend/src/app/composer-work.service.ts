@@ -18,6 +18,12 @@ export interface Composer {
   name: string;
 }
 
+export interface ToneRowMeta {
+  toneRowId: number;
+  work?: Work;
+  composers?: Composer[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -58,6 +64,17 @@ export class ComposerWorkService {
     return this.http.get<Composer | null>(this.baseURL + `/composer?id=${composerId}`, this.httpProperties)
     .pipe(
       tap(x => x),
+      catchError(err => {
+        console.log(err);
+        return of(null);
+      })
+    )
+  }
+
+  getToneRowMeta(toneRowId: number): Observable<ToneRowMeta | null> {
+    return this.http.get<ToneRowMeta | null>(this.baseURL + `/tonerow/meta?id=${toneRowId}`, this.httpProperties)
+    .pipe(
+      tap(x => console.log(x)),
       catchError(err => {
         console.log(err);
         return of(null);

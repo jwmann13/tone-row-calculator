@@ -180,4 +180,28 @@ public class MatrixService {
         toReturn = composerWorkDao.getComposerWorkByWorkId(id);
         return toReturn;
     }
+
+    public ToneRowMeta getToneRowMeta(Integer id) throws InvalidIdException {
+        if (id == null) throw new InvalidIdException("Cannot get tonerow with null id");
+
+        ToneRow toMap = toneRowDao.getToneRowById(id);
+
+        if (toMap == null) throw new InvalidIdException("No tonerow with id " + id);
+        if (toMap.getWorkId() == null) return null;
+
+        Work associatedWork = workDao.getWorkById(toMap.getWorkId());
+
+        List<ComposerWork> composersMap = composerWorkDao
+                .getComposerWorkByWorkId(associatedWork.getWorkId());
+
+        List<Composer> associatedComposers = new ArrayList<>();
+
+        for (ComposerWork cw: composersMap) {
+            associatedComposers.add(
+                    composerDao.getComposerById(cw.getComposerId())
+            );
+        }
+
+        return new ToneRowMeta(id, associatedWork, associatedComposers);
+    }
 }

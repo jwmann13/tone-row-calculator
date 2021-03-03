@@ -68,6 +68,19 @@ public class MatrixController {
         return ResponseEntity.ok(toReturn);
     }
 
+    @GetMapping(value = "tonerow/meta", params = {"id"})
+    public ResponseEntity getToneRowMeta(@RequestParam Integer id) {
+        ToneRowMeta toReturn;
+        try {
+            toReturn = service.getToneRowMeta(id);
+        } catch (InvalidIdException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        return ResponseEntity.ok(toReturn);
+    }
+
     @GetMapping("/work")
     public ResponseEntity getAllWorks() {
         Map<Integer, Work> toReturn;

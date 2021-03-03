@@ -22,32 +22,16 @@ export class ToneRowDisplayComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // TODO: Get rid of this triangle of death
-    if (this.toneRow && this.toneRow.workId) {
-      // 
-      const wObs = this.service.getWorkById(this.toneRow.workId)
-        .subscribe(work => {
-          if (work) {
-            this.workTitle = work.title
-            if (work.workId) {
-              this.service.getComposerWorkByWorkId(work.workId)
-                .subscribe(composerWorks => {
-                  console.log(composerWorks);
-                  if (composerWorks) {
-                    for (let cw of composerWorks) {
-                      this.service.getComposerById(cw.composerId)
-                        .subscribe(composer => {
-                          console.log(composer);
-                          if (composer) {
-                            this.composers.push(composer.name);
-                          }
-                        })
-                    }
-                  }
-                });
-            }
+    if (this.toneRow && this.toneRow.toneRowId && this.toneRow.workId) {
+      this.service.getToneRowMeta(this.toneRow.toneRowId)
+        .subscribe(meta => {
+          if (meta?.work) {
+            this.workTitle = meta.work.title;
           }
-        });
+          if (meta?.composers) {
+            this.composers = meta.composers.map(c => c.name);
+          }
+        })
     }
   }
 
