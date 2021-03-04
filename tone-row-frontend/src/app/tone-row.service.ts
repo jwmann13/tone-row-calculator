@@ -55,4 +55,8 @@ export class ToneRowService {
       })
     )
   }
+
+  postToneRow(newToneRow: object): Observable<ToneRow | null> {
+    return this.http.post<ToneRow>(this.baseURL + "/tonerow", newToneRow, this.httpProperties);
+  }
 }

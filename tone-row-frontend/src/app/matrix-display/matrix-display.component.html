@@ -1,7 +1,7 @@
-<div class="row">
-    <table *ngIf="matrix" class="table col-10 w-50" [ngSwitch]="displaying">
+<div class="row justify-content-center">
+    <table *ngIf="matrix" class="table table-bordered text-center w-50 col-10" [ngSwitch]="displaying">
         <thead>
-            <tr>
+            <tr class="inv-labels">
                 <th></th>
                 <th *ngFor="let i of matrix.inversionLabelOrder" scope="col">{{i}}</th>
                 <th></th>
@@ -9,12 +9,12 @@
         </thead>
         <tbody *ngSwitchCase="1">
             <tr *ngFor="let p of matrix.primeLabelOrder; index as i">
-                <th scope="row">{{matrix.primeLabelOrder[i]}}</th>
+                <th class="prime-labels" scope="row">{{matrix.primeLabelOrder[i]}}</th>
                 <td *ngFor="let note of matrix.primes[p].noteOrder">{{note.accidental ? note.flatName :
                     note.naturalName}} </td>
-                <th scope="row">{{matrix.retrogradeLabelOrder[i]}}</th>
+                <th class="retro-labels" scope="row">{{matrix.retrogradeLabelOrder[i]}}</th>
             </tr>
-            <tr>
+            <tr class="retro-inv-labels">
                 <th></th>
                 <th *ngFor="let r of matrix.retrogradeInversionLabelOrder" scope="col">{{r}}</th>
                 <th></th>
@@ -22,12 +22,12 @@
         </tbody>
         <tbody *ngSwitchCase="2">
             <tr *ngFor="let p of matrix.primeLabelOrder; index as i">
-                <th scope="row">{{p}}</th>
+                <th class="prime-labels" scope="row">{{p}}</th>
                 <td *ngFor="let note of matrix.primes[p].noteOrder">{{note.accidental ? note.sharpName :
                     note.naturalName}} </td>
-                <th scope="row">{{matrix.retrogradeLabelOrder[i]}}</th>
+                <th class="retro-labels" scope="row">{{matrix.retrogradeLabelOrder[i]}}</th>
             </tr>
-            <tr>
+            <tr class="retro-inv-labels">
                 <th></th>
                 <th *ngFor="let r of matrix.retrogradeInversionLabelOrder" scope="col">{{r}}</th>
                 <th></th>
@@ -35,13 +35,34 @@
         </tbody>
         <tbody *ngSwitchCase="3">
             <tr *ngFor="let row of matrix.matrix; index as i">
-                <th>{{matrix.primeLabelOrder[i]}}</th>
+                <th class="prime-labels" scope="row">{{matrix.primeLabelOrder[i]}}</th>
                 <td *ngFor="let pitchClass of row">{{pitchClass}} </td>
-                <th>{{matrix.retrogradeLabelOrder[i]}}</th>
+                <th class="retro-labels" scope="row">{{matrix.retrogradeLabelOrder[i]}}</th>
             </tr>
-            <tr>
+            <tr class="retro-inv-labels">
                 <th></th>
                 <th *ngFor="let r of matrix.retrogradeInversionLabelOrder" scope="col">{{r}}</th>
+                <th></th>
+            </tr>
+        </tbody>
+    </table>
+    <table *ngIf="tempMatrix" class="table table-bordered empty w-50 col-10" [ngSwitch]="displaying">
+        <thead>
+            <tr class="inv-labels">
+                <th></th>
+                <th *ngFor="let i of [0,1,2,3,4,5,6,7,8,9,10,11]" scope="col"></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let row of tempMatrix">
+                <th class="prime-labels" scope="row"></th>
+                <td *ngFor="let note of row">{{note}}</td>
+                <th class="retro-labels" scope="row"></th>
+            </tr>
+            <tr class="retro-inv-labels">
+                <th></th>
+                <th *ngFor="let i of [0,1,2,3,4,5,6,7,8,9,10,11]" scope="col"></th>
                 <th></th>
             </tr>
         </tbody>

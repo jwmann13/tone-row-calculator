@@ -18,11 +18,17 @@
             {{note.pitchClass}}
         </span>
     </a>
+    <a href="/matrix/{{toneRow.toneRowId}}" *ngSwitchCase="4">
+        <span *ngFor="let note of convertToneRowToPCChar()">
+            {{note}}
+        </span>
+    </a>
 </td>
 <td *ngIf="toneRow">
     <div class="btn-group">
         <button id="FlatBtn" (click)="toggleDisplay(1)" class="btn btn-primary" [disabled]="displaying === 1">&#9837;</button>
         <button id="SharpBtn" (click)="toggleDisplay(2)" class="btn btn-primary" [disabled]="displaying === 2">#</button>
-        <button id="PitchClassBtn" (click)="toggleDisplay(3)" class="btn btn-primary" [disabled]="displaying === 3">0</button>
+        <button id="PitchClassNumBtn" (click)="toggleDisplay(3)" class="btn btn-primary" [disabled]="displaying === 3">0</button>
+        <button id="PitchClassCharBtn" (click)="toggleDisplay(4)" class="btn btn-primary" [disabled]="displaying === 4">t</button>
     </div>
 </td>

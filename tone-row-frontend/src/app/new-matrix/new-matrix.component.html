@@ -1,1 +1,31 @@
-<p>new-matrix works!</p>
+<div class="row text-center">
+    <matrix-display [tempMatrix]="tempMatrix" class="col-12"></matrix-display>
+
+    <div class="d-inline-block text-center col-8">
+        <div class="">
+            <button (click)="addToRow($event, 1)" class="note-btn btn btn-secondary m-1">C#</button>
+            <button (click)="addToRow($event, 3)" class="note-btn btn btn-secondary m-1">D#</button>
+            <div class="spacer d-inline-block p-4"></div>
+            <button (click)="addToRow($event, 6)" class="note-btn btn btn-secondary m-1">F#</button>
+            <button (click)="addToRow($event, 8)" class="note-btn btn btn-secondary m-1">G#</button>
+            <button (click)="addToRow($event, 10)" class="note-btn btn btn-secondary m-1">A#</button>
+        </div>
+        <div class="">
+            <button (click)="addToRow($event, 0)" class="note-btn btn btn-secondary m-1">C</button>
+            <button (click)="addToRow($event, 2)" class="note-btn btn btn-secondary m-1">D</button>
+            <button (click)="addToRow($event, 4)" class="note-btn btn btn-secondary m-1">E</button>
+            <button (click)="addToRow($event, 5)" class="note-btn btn btn-secondary m-1">F</button>
+            <button (click)="addToRow($event, 7)" class="note-btn btn btn-secondary m-1">G</button>
+            <button (click)="addToRow($event, 9)" class="note-btn btn btn-secondary m-1">A</button>
+            <button (click)="addToRow($event, 11)" class="note-btn btn btn-secondary m-1">B</button>
+        </div>
+    </div>
+    <div class="d-flex flex-column align-items-start justify-content-center col-2">
+        <button (click)="deleteNote()" class="btn btn-primary mb-1">Delete</button>
+        <button (click)="saveToneRow()" class="btn btn-success">
+            <fa-icon [icon]="saveIcon" class="me-2"></fa-icon>
+            Save
+        </button>
+    </div>
+
+</div>

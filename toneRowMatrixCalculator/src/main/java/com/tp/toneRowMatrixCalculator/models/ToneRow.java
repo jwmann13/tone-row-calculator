@@ -72,7 +72,8 @@ public class ToneRow {
 
         for (Note n : noteOrder) {
             ToneRow retrogradeInvertedRow = invert().transpose(((n.getPitchClass() - firstPc) + 12) % 12).retrograde();
-            String label = "RI" + retrogradeInvertedRow.noteOrder[0].getPitchClass();
+//            String label = "RI" + retrogradeInvertedRow.noteOrder[0].getPitchClass();
+            String label = "RI" + n.getPitchClass();
             toReturn.put(label, retrogradeInvertedRow);
             labels.add(label);
         }
@@ -90,7 +91,8 @@ public class ToneRow {
 
         for (Note n : invert().noteOrder) {
             ToneRow retrogradeRow = transpose(((n.getPitchClass() - firstPc) + 12) % 12).retrograde();
-            String label = "R" + retrogradeRow.noteOrder[0].getPitchClass();
+//            String label = "R" + retrogradeRow.noteOrder[0].getPitchClass();
+            String label = "R" + n.getPitchClass();
             toReturn.put(label, retrogradeRow);
             labels.add(label);
         }

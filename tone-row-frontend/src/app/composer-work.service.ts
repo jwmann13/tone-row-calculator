@@ -41,7 +41,6 @@ export class ComposerWorkService {
   getWorkById(workId: number): Observable<Work | null> {
     return this.http.get<Work | null>(this.baseURL + `/work?id=${workId}`, this.httpProperties)
     .pipe(
-      tap(x => x),
       catchError(err => {
         console.log(err);
         return of(null);
@@ -52,7 +51,6 @@ export class ComposerWorkService {
   getComposerWorkByWorkId(workId: number): Observable<ComposerWork[] | null> {
     return this.http.get<ComposerWork[] | null>(this.baseURL + `/composerwork?id=${workId}`, this.httpProperties)
     .pipe(
-      tap(x => x),
       catchError(err => {
         console.log(err);
         return of(null);
@@ -63,7 +61,6 @@ export class ComposerWorkService {
   getComposerById(composerId: number): Observable<Composer | null> {
     return this.http.get<Composer | null>(this.baseURL + `/composer?id=${composerId}`, this.httpProperties)
     .pipe(
-      tap(x => x),
       catchError(err => {
         console.log(err);
         return of(null);
@@ -74,7 +71,6 @@ export class ComposerWorkService {
   getToneRowMeta(toneRowId: number): Observable<ToneRowMeta | null> {
     return this.http.get<ToneRowMeta | null>(this.baseURL + `/tonerow/meta?id=${toneRowId}`, this.httpProperties)
     .pipe(
-      tap(x => console.log(x)),
       catchError(err => {
         console.log(err);
         return of(null);

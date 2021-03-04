@@ -11,32 +11,41 @@ import { ToneRowService } from '../tone-row.service';
 })
 export class MatrixDisplayComponent implements OnInit {
 
-  @Input() matrix: Matrix | null;
+  matrix: Matrix | null;
+  @Input() tempMatrix: number[][] | null;
   displaying: ToneRowDisplayOptions;
 
   constructor(private service: ToneRowService, private route: ActivatedRoute) {
     this.matrix = null;
+    this.tempMatrix = null;
     this.displaying = ToneRowDisplayOptions.FLATS;
   }
 
   ngOnInit(): void {
     const routeMap = this.route.snapshot.paramMap;
-    const matrixId = Number(routeMap.get("toneRowId"));
-    this.service.getMatrix(matrixId).subscribe(data => {
-      this.matrix = data;
-    });
+    if (this.tempMatrix) {
+      
+    } else {
+      const matrixId = Number(routeMap.get("toneRowId"));
+      this.service.getMatrix(matrixId).subscribe(data => {
+        this.matrix = data;
+      });
+    }
   }
 
   toggleDisplay(option: number) {
     switch (option) {
       case 1:
-        this.displaying = ToneRowDisplayOptions.FLATS
+        this.displaying = ToneRowDisplayOptions.FLATS;
         break;
       case 2:
-        this.displaying = ToneRowDisplayOptions.SHARPS
+        this.displaying = ToneRowDisplayOptions.SHARPS;
         break;
       case 3:
-        this.displaying = ToneRowDisplayOptions.PITCH_CLASSES
+        this.displaying = ToneRowDisplayOptions.PITCH_CLASSES_NUMS;
+        break;
+      case 4:
+        this.displaying = ToneRowDisplayOptions.PITCH_CLASSES_CHAR;
         break;
       default:
         break;

@@ -1,0 +1,13 @@
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins/_breakpoints";
+
+.note-btn {
+    width: 2.5em;
+}
+
+@include media-breakpoint-up(sm) {
+    .note-btn {
+        width: 4em;
+    }
+}

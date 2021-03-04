@@ -5,7 +5,8 @@ import { ToneRow } from '../models/ToneRow';
 export enum ToneRowDisplayOptions {
   FLATS = 1,
   SHARPS = 2,
-  PITCH_CLASSES = 3
+  PITCH_CLASSES_NUMS = 3,
+  PITCH_CLASSES_CHAR = 4
 }
 
 @Component({
@@ -50,11 +51,24 @@ export class ToneRowDisplayComponent implements OnInit {
         this.displaying = ToneRowDisplayOptions.SHARPS;
         break;
       case 3:
-        this.displaying = ToneRowDisplayOptions.PITCH_CLASSES;
+        this.displaying = ToneRowDisplayOptions.PITCH_CLASSES_NUMS;
+        break;
+      case 4:
+        this.displaying = ToneRowDisplayOptions.PITCH_CLASSES_CHAR;
         break;
       default:
         break;
     }
+  }
+
+  convertToneRowToPCChar(): string[] {
+    if (this.toneRow) {
+      return this.toneRow.noteOrder.map(n => {
+        if (n.pitchClass === 10) return 't';
+        if (n.pitchClass === 11) return 'e';
+        return n.pitchClass.toString();
+      })
+    } else return [];
   }
 
 }

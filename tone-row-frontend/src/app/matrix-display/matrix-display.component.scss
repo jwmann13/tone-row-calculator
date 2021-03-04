@@ -1,0 +1,32 @@
+.prime-labels {
+    border-right: 2px solid black;
+}
+
+.retro-labels {
+    border-left: 2px solid black;
+}
+
+.inv-labels {
+    border-bottom: 2px solid black;
+    th:first-child {
+        border-right: 2px solid black;
+    }
+    th:last-child {
+        border-left: 2px solid black;
+    }
+}
+
+.retro-inv-labels {
+    border-top: 2px solid black;
+    th:first-child {
+        border-right: 2px solid black;
+    }
+    th:last-child {
+        border-left: 2px solid black;
+    }
+}
+
+table.empty td, th {
+    width: 1.5rem;
+    height: 1.5rem;
+}
