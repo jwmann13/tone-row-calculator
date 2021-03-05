@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router'
 import { Matrix } from '../models/Matrix';
 import { ToneRowDisplayOptions } from '../tone-row-display/tone-row-display.component';
@@ -14,6 +14,7 @@ export class MatrixDisplayComponent implements OnInit {
   matrix: Matrix | null;
   @Input() tempMatrix: number[][] | null;
   displaying: ToneRowDisplayOptions;
+  @Output() displayChangeEvent: EventEmitter<ToneRowDisplayOptions> = new EventEmitter<ToneRowDisplayOptions>();
 
   constructor(private service: ToneRowService, private route: ActivatedRoute) {
     this.matrix = null;
@@ -50,6 +51,7 @@ export class MatrixDisplayComponent implements OnInit {
       default:
         break;
     }
+    this.displayChangeEvent.emit(this.displaying);
   }
 
 }
