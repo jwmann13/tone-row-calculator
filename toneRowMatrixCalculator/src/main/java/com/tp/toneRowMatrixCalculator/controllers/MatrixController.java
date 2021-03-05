@@ -187,4 +187,18 @@ public class MatrixController {
         return ResponseEntity.ok(toReturn);
     }
 
+    @PostMapping("/tonerow/meta")
+    public ResponseEntity createToneRowMeta(@RequestBody ToneRowMetaRequest newToneRowDetails) {
+        ToneRowMeta toReturn;
+        Integer[] noteOrder = newToneRowDetails.noteOrder;
+        String work = newToneRowDetails.work;
+        List<String> composers = newToneRowDetails.composers;
+        try {
+            toReturn = service.createToneRowWithDetails(noteOrder, work, composers);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        return ResponseEntity.ok(toReturn);
+    }
+
 }

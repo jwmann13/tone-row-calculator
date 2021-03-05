@@ -181,6 +181,10 @@ public class MatrixService {
         return toReturn;
     }
 
+    public ComposerWork createComposerWork(Work work, Composer composer) {
+        return composerWorkDao.createComposerWork(work, composer);
+    }
+
     public ToneRowMeta getToneRowMeta(Integer id) throws InvalidIdException {
         if (id == null) throw new InvalidIdException("Cannot get tonerow with null id");
 
@@ -196,12 +200,31 @@ public class MatrixService {
 
         List<Composer> associatedComposers = new ArrayList<>();
 
-        for (ComposerWork cw: composersMap) {
+        for (ComposerWork cw : composersMap) {
             associatedComposers.add(
                     composerDao.getComposerById(cw.getComposerId())
             );
         }
 
         return new ToneRowMeta(id, associatedWork, associatedComposers);
+    }
+
+    public ToneRowMeta createToneRowWithDetails(Integer[] noteOrder, String work, List<String> composers) {
+        List<Composer> createdComposers = new ArrayList<>();
+        for (String composer : composers) {
+            createdComposers.add(createComposer(composer));
+        }
+        Work createdWork = createWork(work);
+
+//        List<ComposerWork> createdComposerWorks = new ArrayList<>();
+        for (Composer c : createdComposers) {
+//            createdComposerWorks.add(
+                    createComposerWork(createdWork, c);
+//            );
+        }
+
+        ToneRow createdToneRow = createToneRow(noteOrder, createdWork.getWorkId());
+
+        return new ToneRowMeta(createdToneRow.getToneRowId(), createdWork, createdComposers);
     }
 }

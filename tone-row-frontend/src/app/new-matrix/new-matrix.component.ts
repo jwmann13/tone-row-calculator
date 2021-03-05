@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { ComposerWorkService } from '../composer-work.service';
-import { ToneRowService } from '../tone-row.service';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 import { faSave } from '@fortawesome/free-solid-svg-icons';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ComposerWorkService } from '../composer-work.service';
 
 @Component({
   selector: 'app-new-matrix',
@@ -13,18 +14,23 @@ export class NewMatrixComponent implements OnInit {
   tempMatrix: number[][];
   buttonStack: HTMLButtonElement[];
   saveIcon = faSave;
+  work: string;
+  composer: string;
+  @Output() saveEvent: EventEmitter<{ toneRow: number[] }> = new EventEmitter<{ toneRow: number[] }>();
 
-  constructor(private cwService: ComposerWorkService, private trService: ToneRowService) {
+  constructor(private modalService: NgbModal, private cwService: ComposerWorkService, private router: Router) {
     this.newRow = [];
     this.tempMatrix = [];
     this.buttonStack = [];
+    this.work = "";
+    this.composer = "";
   }
 
   ngOnInit(): void {
   }
-  
+
   addToRow(event: MouseEvent, pitchClass: number) {
-    if (event.target && event.target instanceof HTMLButtonElement){
+    if (event.target && event.target instanceof HTMLButtonElement) {
       event.target.disabled = true;
       this.buttonStack.push(event.target);
     }
@@ -45,15 +51,30 @@ export class NewMatrixComponent implements OnInit {
   }
 
   deleteNote() {
-      let lastButton = this.buttonStack.pop();
-      if (lastButton !== undefined) lastButton.disabled = false;
-      this.newRow.pop();
-      this.tempMatrix = NewMatrixComponent.generateTempMatrix(this.newRow);
+    let lastButton = this.buttonStack.pop();
+    if (lastButton !== undefined) lastButton.disabled = false;
+    this.newRow.pop();
+    this.tempMatrix = NewMatrixComponent.generateTempMatrix(this.newRow);
   }
 
-  saveToneRow() {
-    this.trService.postToneRow({ noteOrder: this.newRow, workId: null })
-    .subscribe(x => console.log(x));
+  open(modal: any) {
+    this.modalService.open(modal).result.then(
+      result => {
+        console.log(result);
+      }, reason => {
+        console.log(reason);
+      });
+  }
+
+  save() {
+    const composers = this.composer.split(",").map(c => c.trim());
+    if (this.newRow.length === 12 && this.composer && this.work) {
+      this.cwService.postToneRowMeta(this.newRow, composers, this.work)
+      .subscribe(data => {
+        this.modalService.dismissAll("Tone Row Saved");
+        this.router.navigateByUrl("");
+      });
+    }
   }
 
 }

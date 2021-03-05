@@ -1,6 +1,8 @@
 package com.tp.toneRowMatrixCalculator.daos;
 
+import com.tp.toneRowMatrixCalculator.models.Composer;
 import com.tp.toneRowMatrixCalculator.models.ComposerWork;
+import com.tp.toneRowMatrixCalculator.models.Work;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -59,12 +61,13 @@ public class ComposerWorkPostgresDao implements ComposerWorkDao {
     }
 
     @Override
-    public void createComposerWork(Integer workId, Integer composerId) {
-        template.query("INSERT INTO \"composerWorks\" (\"composerId\", \"workId\") " +
-                        "VALUES (?, ?);",
+    public ComposerWork createComposerWork(Work work, Composer composer) {
+        return template.queryForObject("INSERT INTO \"composerWorks\" (\"composerId\", \"workId\") " +
+                        "VALUES (?, ?)" +
+                        "RETURNING \"composerId\", \"workId\";",
                 new ComposerWorkMapper(),
-                workId,
-                composerId
+                composer.getComposerId(),
+                work.getWorkId()
         );
     }
 

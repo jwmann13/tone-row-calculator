@@ -1,3 +1,29 @@
+<!-- <save-modal #saveModal [toneRow]="newRow"></save-modal> -->
+<ng-template #saveModal let-modal id="saveModal">
+    <div class="modal-header">
+        <h5 class="modal-title" id="SaveModalLabel">Save your row</h5>
+        <button type="button" class="btn-close" (click)="modal.dismiss('Closed')" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <p>Please add a Title and Composer to your row so that we can keep track of it</p>
+        <form>
+            <div class="mb-3">
+                <label class="form-label" for="work">
+                    Work Title:
+                    <input class="form-control" type="text" name="work" [(ngModel)]="work">
+                </label>
+                <label class="form-label" for="composer">
+                    Composer Name:
+                    <input class="form-control" type="text" name="composer" [(ngModel)]="composer">
+                </label>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Closed')">Close</button>
+        <button type="button" class="btn btn-primary" (click)="save()">Save changes</button>
+    </div>
+</ng-template>
 <div class="row text-center">
     <matrix-display [tempMatrix]="tempMatrix" class="col-12"></matrix-display>
 
@@ -22,7 +48,7 @@
     </div>
     <div class="d-flex flex-column align-items-start justify-content-center col-2">
         <button (click)="deleteNote()" class="btn btn-primary mb-1">Delete</button>
-        <button (click)="saveToneRow()" class="btn btn-success">
+        <button (click)="open(saveModal)" class="btn btn-success" [disabled]="newRow.length < 12">
             <fa-icon [icon]="saveIcon" class="me-2"></fa-icon>
             Save
         </button>

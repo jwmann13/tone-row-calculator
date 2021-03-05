@@ -1,6 +1,8 @@
 package com.tp.toneRowMatrixCalculator.daos;
 
+import com.tp.toneRowMatrixCalculator.models.Composer;
 import com.tp.toneRowMatrixCalculator.models.ComposerWork;
+import com.tp.toneRowMatrixCalculator.models.Work;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -12,5 +14,5 @@ public interface ComposerWorkDao {
     boolean exists(Integer workId, Integer composerId);
     List<ComposerWork> getComposerWork (Integer workId, Integer composerId);
     List<ComposerWork> getComposerWorkByWorkId (Integer workId);
-    void createComposerWork(Integer workId, Integer composerId);
+    ComposerWork createComposerWork(Work work, Composer composer);
 }

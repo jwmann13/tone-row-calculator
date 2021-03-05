@@ -40,41 +40,54 @@ export class ComposerWorkService {
 
   getWorkById(workId: number): Observable<Work | null> {
     return this.http.get<Work | null>(this.baseURL + `/work?id=${workId}`, this.httpProperties)
-    .pipe(
-      catchError(err => {
-        console.log(err);
-        return of(null);
-      })
-    );
+      .pipe(
+        catchError(err => {
+          console.log(err);
+          return of(null);
+        })
+      );
   }
 
   getComposerWorkByWorkId(workId: number): Observable<ComposerWork[] | null> {
     return this.http.get<ComposerWork[] | null>(this.baseURL + `/composerwork?id=${workId}`, this.httpProperties)
-    .pipe(
-      catchError(err => {
-        console.log(err);
-        return of(null);
-      })
-    );
+      .pipe(
+        catchError(err => {
+          console.log(err);
+          return of(null);
+        })
+      );
   }
 
   getComposerById(composerId: number): Observable<Composer | null> {
     return this.http.get<Composer | null>(this.baseURL + `/composer?id=${composerId}`, this.httpProperties)
-    .pipe(
-      catchError(err => {
-        console.log(err);
-        return of(null);
-      })
-    )
+      .pipe(
+        catchError(err => {
+          console.log(err);
+          return of(null);
+        })
+      )
   }
 
   getToneRowMeta(toneRowId: number): Observable<ToneRowMeta | null> {
     return this.http.get<ToneRowMeta | null>(this.baseURL + `/tonerow/meta?id=${toneRowId}`, this.httpProperties)
-    .pipe(
-      catchError(err => {
-        console.log(err);
-        return of(null);
-      })
-    )
+      .pipe(
+        catchError(err => {
+          console.log(err);
+          return of(null);
+        })
+      )
+  }
+
+  postToneRowMeta(noteOrder: number[], composers: string[], work: string): Observable<ToneRowMeta | null> {
+    return this.http.post<ToneRowMeta | null>(this.baseURL + "/tonerow/meta",
+      { noteOrder, work, composers },
+      this.httpProperties)
+      .pipe(
+        tap(x => console.log(x)),
+        catchError(err => {
+          console.log(err);
+          return of(null);
+        })
+      )
   }
 }
