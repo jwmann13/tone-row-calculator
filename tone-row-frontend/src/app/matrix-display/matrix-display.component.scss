@@ -26,6 +26,19 @@
     }
 }
 
+.row-label {
+    cursor: pointer;
+}
+
+.row-label:hover {
+    cursor: pointer;
+    background-color: #dddddd;
+}
+
+.row-label.selected {
+    background-color: #cccccc;
+}
+
 table.empty td, th {
     width: 1.5rem;
     height: 1.5rem;

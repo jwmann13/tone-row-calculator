@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import Vex from 'vexflow';
+import { Matrix } from '../models/Matrix';
 import { Note } from '../models/Note';
 import { ToneRowDisplayOptions } from '../tone-row-display/tone-row-display.component';
 
@@ -10,7 +11,9 @@ import { ToneRowDisplayOptions } from '../tone-row-display/tone-row-display.comp
 })
 export class RowStaffDisplayComponent implements OnInit, OnChanges {
   @Input() displaying: ToneRowDisplayOptions = ToneRowDisplayOptions.FLATS;
-  @Input() noteRow: Note[];
+  @Input() matrix: Matrix | null = null;
+  @Input() selectedLabel: string = "P0";
+  noteRow: Note[];
   noteString: string;
   VF = Vex.Flow;
   vf: Vex.Flow.Factory | undefined = undefined;
@@ -24,9 +27,27 @@ export class RowStaffDisplayComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.noteString = RowStaffDisplayComponent.parseNoteRow(this.noteRow, this.displaying);
-    const boo = document.getElementById("boo")
-    if(boo) boo.innerHTML =  "";
+    if (this.matrix) {
+      switch (this.selectedLabel.slice(0, 1)) {
+        case "P":
+          this.noteRow = this.matrix.primes[this.selectedLabel].noteOrder;
+          break;
+        case "I":
+          this.noteRow = this.matrix.inversions[this.selectedLabel].noteOrder;
+          break;
+        case "R":
+          this.noteRow = this.selectedLabel.slice(0, 2) === "RI" ?
+            this.matrix.retrogradeInversions[this.selectedLabel].noteOrder :
+            this.matrix.retrogrades[this.selectedLabel].noteOrder
+          break;
+        default:
+          break;
+      }
+      this.noteString = RowStaffDisplayComponent.parseNoteRow(this.noteRow, this.displaying);
+    }
+
+    const boo = document.getElementById("boo");
+    if (boo) boo.innerHTML = "";
     if (this.vf) {
       this.vf = new this.VF.Factory({ renderer: { elementId: "boo", width: 500, height: 120 } });
       this.score = this.vf.EasyScore();
@@ -43,6 +64,23 @@ export class RowStaffDisplayComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    if (this.matrix) {
+      switch (this.selectedLabel.slice(0, 1)) {
+        case "P":
+          this.noteRow = this.matrix.primes[this.selectedLabel].noteOrder;
+          break;
+        case "I":
+          this.noteRow = this.matrix.inversions[this.selectedLabel].noteOrder;
+          break;
+        case "R":
+          this.noteRow = this.selectedLabel.slice(0, 2) === "RI" ?
+            this.matrix.retrogradeInversions[this.selectedLabel].noteOrder :
+            this.matrix.retrogrades[this.selectedLabel].noteOrder
+          break;
+        default:
+          break;
+      }
+    }
     this.noteString = RowStaffDisplayComponent.parseNoteRow(this.noteRow, this.displaying);
 
     this.vf = new this.VF.Factory({ renderer: { elementId: "boo", width: 500, height: 120 } });

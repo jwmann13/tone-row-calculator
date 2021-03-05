@@ -15,6 +15,7 @@ export class MatrixDisplayComponent implements OnInit {
   @Input() tempMatrix: number[][] | null;
   displaying: ToneRowDisplayOptions;
   @Output() displayChangeEvent: EventEmitter<ToneRowDisplayOptions> = new EventEmitter<ToneRowDisplayOptions>();
+  selectedLabel: string = "P0";
 
   constructor(private service: ToneRowService, private route: ActivatedRoute) {
     this.matrix = null;
@@ -52,6 +53,11 @@ export class MatrixDisplayComponent implements OnInit {
         break;
     }
     this.displayChangeEvent.emit(this.displaying);
+  }
+
+  labelClick(label: string) {
+    console.log(label);
+    this.selectedLabel = label;
   }
 
 }
