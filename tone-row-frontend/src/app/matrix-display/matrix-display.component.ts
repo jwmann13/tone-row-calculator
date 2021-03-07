@@ -35,6 +35,17 @@ export class MatrixDisplayComponent implements OnInit {
     }
   }
 
+  emptyArray() {
+    return Array(12);
+  }
+
+  shrinkingArray() {
+    if (this.tempMatrix) {
+      return Array(12 - this.tempMatrix.length);
+    }
+    else return Array(12);
+  }
+
   toggleDisplay(option: number) {
     switch (option) {
       case 1:

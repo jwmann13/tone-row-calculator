@@ -62,23 +62,29 @@
             </tr>
         </tbody>
     </table>
-    <table *ngIf="tempMatrix" class="table table-bordered empty w-50 col-10" [ngSwitch]="displaying">
+    <table *ngIf="tempMatrix" class="table table-bordered w-50 col-10" [ngSwitch]="displaying">
         <thead>
             <tr class="inv-labels">
                 <th></th>
-                <th *ngFor="let i of [0,1,2,3,4,5,6,7,8,9,10,11]" scope="col"></th>
+                <th *ngFor="let i of emptyArray()" class="empty" scope="col"></th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let row of tempMatrix">
-                <th class="prime-labels" scope="row"></th>
+                <th class="prime-labels empty" scope="row"></th>
                 <td *ngFor="let note of row">{{note}}</td>
-                <th class="retro-labels" scope="row"></th>
+                <td class="empty" *ngFor="let j of shrinkingArray()"></td>
+                <th class="retro-labels empty" scope="row"></th>
+            </tr>
+            <tr *ngFor="let i of shrinkingArray()">
+                <th class="prime-labels empty" scope="row"></th>
+                <td class="empty" *ngFor="let j of emptyArray()"></td>
+                <th class="retro-labels empty" scope="row"></th>
             </tr>
             <tr class="retro-inv-labels">
                 <th></th>
-                <th *ngFor="let i of [0,1,2,3,4,5,6,7,8,9,10,11]" scope="col"></th>
+                <th class="empty" *ngFor="let i of emptyArray()" scope="col"></th>
                 <th></th>
             </tr>
         </tbody>
