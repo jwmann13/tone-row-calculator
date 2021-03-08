@@ -13,7 +13,8 @@
         <tbody *ngSwitchCase="1">
             <tr *ngFor="let p of matrix.primeLabelOrder; index as i">
                 <th scope="row" class="prime-labels row-label" (click)="labelClick(p)"
-                    [class.selected]="selectedLabel===p">{{matrix.primeLabelOrder[i]}}</th>
+                    [class.selected]="selectedLabel===p">
+                    {{matrix.primeLabelOrder[i]}}</th>
                 <td *ngFor="let note of matrix.primes[p].noteOrder">{{note.accidental ? note.flatName :
                     note.naturalName}} </td>
                 <th scope="row" class="retro-labels row-label" (click)="labelClick(matrix.retrogradeLabelOrder[i])"
@@ -30,7 +31,8 @@
         <tbody *ngSwitchCase="2">
             <tr *ngFor="let p of matrix.primeLabelOrder; index as i">
                 <th scope="row" class="prime-labels row-label" (click)="labelClick(p)"
-                    [class.selected]="selectedLabel===p">{{p}}</th>
+                    [class.selected]="selectedLabel===p">
+                    {{p}}</th>
                 <td *ngFor="let note of matrix.primes[p].noteOrder">{{note.accidental ? note.sharpName :
                     note.naturalName}} </td>
                 <th scope="row" class="retro-labels row-label" (click)="labelClick(matrix.retrogradeLabelOrder[i])"
@@ -61,37 +63,57 @@
                 <th></th>
             </tr>
         </tbody>
+        <tbody *ngSwitchCase="4">
+            <tr *ngFor="let row of convertMatrixToPCChar(); index as i">
+                <th scope="row" class="prime-labels row-label" (click)="labelClick(matrix.primeLabelOrder[i])"
+                    [class.selected]="selectedLabel===matrix.primeLabelOrder[i]">{{matrix.primeLabelOrder[i]}}</th>
+                <td *ngFor="let pitchClass of row">{{pitchClass}} </td>
+                <th scope="row" class="retro-labels row-label" (click)="labelClick(matrix.retrogradeLabelOrder[i])"
+                    [class.selected]="selectedLabel===matrix.retrogradeLabelOrder[i]">
+                    {{matrix.retrogradeLabelOrder[i]}}
+                </th>
+            </tr>
+            <tr class="retro-inv-labels">
+                <th></th>
+                <th *ngFor="let r of matrix.retrogradeInversionLabelOrder" scope="col" class="row-label"
+                    (click)="labelClick(r)" [class.selected]="selectedLabel===r">{{r}}</th>
+                <th></th>
+            </tr>
+        </tbody>
     </table>
     <table *ngIf="tempMatrix" class="table table-bordered w-50 col-10" [ngSwitch]="displaying">
         <thead>
             <tr class="inv-labels">
                 <th></th>
-                <th *ngFor="let i of emptyArray()" class="empty" scope="col"></th>
+                <th *ngFor="let i of tempInversionLabels" scope="col">{{i}}</th>
+                <th *ngFor="let e of shrinkingArray(tempInversionLabels)" class="empty" scope="col"></th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let row of tempMatrix">
-                <th class="prime-labels empty" scope="row"></th>
+            <tr *ngFor="let row of tempMatrix; index as i">
+                <th class="prime-labels" scope="row">{{tempPrimeLabels[i]}}</th>
                 <td *ngFor="let note of row">{{note}}</td>
-                <td class="empty" *ngFor="let j of shrinkingArray()"></td>
-                <th class="retro-labels empty" scope="row"></th>
+                <td class="empty" *ngFor="let j of shrinkingArray(tempMatrix)"></td>
+                <th class="retro-labels" scope="row">{{tempRetrogradeLabels[i]}}</th>
             </tr>
-            <tr *ngFor="let i of shrinkingArray()">
+            <tr *ngFor="let i of shrinkingArray(tempMatrix)">
                 <th class="prime-labels empty" scope="row"></th>
                 <td class="empty" *ngFor="let j of emptyArray()"></td>
                 <th class="retro-labels empty" scope="row"></th>
             </tr>
             <tr class="retro-inv-labels">
                 <th></th>
-                <th class="empty" *ngFor="let i of emptyArray()" scope="col"></th>
+                <th class="empty" *ngFor="let ri of tempRetrogradeInversionLabels" scope="col">{{ri}}</th>
+                <th class="empty" *ngFor="let e of shrinkingArray(tempRetrogradeInversionLabels)" scope="col"></th>
                 <th></th>
             </tr>
         </tbody>
     </table>
-    <div class="col-2 btn-group justify-content-center align-self-center">
+    <div *ngIf="displaying" class="col-2 btn-group justify-content-center align-self-center">
         <button (click)="toggleDisplay(1)" class="btn btn-primary" [disabled]="displaying === 1">&#9837;</button>
         <button (click)="toggleDisplay(2)" class="btn btn-primary" [disabled]="displaying === 2">#</button>
         <button (click)="toggleDisplay(3)" class="btn btn-primary" [disabled]="displaying === 3">0</button>
+        <button (click)="toggleDisplay(4)" class="btn btn-primary" [disabled]="displaying === 4">t</button>
     </div>
 </div>

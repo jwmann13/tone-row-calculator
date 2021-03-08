@@ -12,6 +12,7 @@ import { ToneRowListComponent } from './tone-row-list/tone-row-list.component';
 import { NewMatrixComponent } from './new-matrix/new-matrix.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RowStaffDisplayComponent } from './row-staff-display/row-staff-display.component';
+import { ShowMatrixComponent } from './show-matrix/show-matrix.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { RowStaffDisplayComponent } from './row-staff-display/row-staff-display.
     ToneRowListComponent,
     NewMatrixComponent,
     RowStaffDisplayComponent,
+    ShowMatrixComponent,
   ],
   imports: [
     BrowserModule,

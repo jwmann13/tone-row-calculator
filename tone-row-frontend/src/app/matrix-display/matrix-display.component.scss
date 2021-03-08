@@ -39,7 +39,24 @@
     background-color: #cccccc;
 }
 
+td, th {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
 td.empty, th.empty {
     width: 2.5rem;
     height: 2.5rem;
 }
+
+// @include media-breakpoint-up(sm) {
+//     td, th {
+//         width: 1rem;
+//         height: 1rem;
+//     }
+    
+//     td.empty, th.empty {
+//         width: 1rem;
+//         height: 1rem;
+//     }
+// }

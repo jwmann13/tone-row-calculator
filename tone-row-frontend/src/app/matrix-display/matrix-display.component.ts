@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router'
 import { Matrix } from '../models/Matrix';
 import { ToneRowDisplayOptions } from '../tone-row-display/tone-row-display.component';
@@ -9,41 +9,44 @@ import { ToneRowService } from '../tone-row.service';
   templateUrl: './matrix-display.component.html',
   styleUrls: ['./matrix-display.component.scss']
 })
-export class MatrixDisplayComponent implements OnInit {
+export class MatrixDisplayComponent implements OnInit, OnChanges {
 
-  matrix: Matrix | null;
+  @Input() matrix: Matrix | null;
+  @Input() displaying: ToneRowDisplayOptions;
   @Input() tempMatrix: number[][] | null;
-  displaying: ToneRowDisplayOptions;
-  @Output() displayChangeEvent: EventEmitter<ToneRowDisplayOptions> = new EventEmitter<ToneRowDisplayOptions>();
+  tempPrimeLabels: string[];
+  tempInversionLabels: string[];
+  tempRetrogradeLabels: string[];
+  tempRetrogradeInversionLabels: string[];
   selectedLabel: string = "P0";
 
   constructor(private service: ToneRowService, private route: ActivatedRoute) {
     this.matrix = null;
     this.tempMatrix = null;
-    this.displaying = ToneRowDisplayOptions.FLATS;
+    this.tempPrimeLabels = [];
+    this.tempInversionLabels = [];
+    this.tempRetrogradeLabels = [];
+    this.tempRetrogradeInversionLabels = [];
+    this.displaying = 0;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.tempMatrix && this.tempMatrix.length > 0) {
+      this.tempPrimeLabels = this.tempMatrix.map(n => "P" + n[0]);
+      this.tempInversionLabels = this.tempMatrix[0].map(n => "I" + n);
+      this.tempRetrogradeLabels = this.tempMatrix.map(n => "R" + n[0]);
+      this.tempRetrogradeInversionLabels = this.tempMatrix[0].map(n => "RI" + n);
+    }
   }
 
   ngOnInit(): void {
-    const routeMap = this.route.snapshot.paramMap;
-    if (this.tempMatrix) {
-      
-    } else {
-      const matrixId = Number(routeMap.get("toneRowId"));
-      this.service.getMatrix(matrixId).subscribe(data => {
-        this.matrix = data;
-      });
-    }
-  }
-
-  emptyArray() {
-    return Array(12);
-  }
-
-  shrinkingArray() {
-    if (this.tempMatrix) {
-      return Array(12 - this.tempMatrix.length);
-    }
-    else return Array(12);
+    // const routeMap = this.route.snapshot.paramMap;
+    // const matrixId = Number(routeMap.get("toneRowId"));
+    // if (matrixId) {
+    //   this.service.getMatrix(matrixId).subscribe(data => {
+    //     this.matrix = data;
+    //   });
+    // }
   }
 
   toggleDisplay(option: number) {
@@ -63,7 +66,30 @@ export class MatrixDisplayComponent implements OnInit {
       default:
         break;
     }
-    this.displayChangeEvent.emit(this.displaying);
+  }
+
+  convertMatrixToPCChar(): string[][] {
+    let converted: any[] = [];
+    if (this.matrix) {
+      for (const row of this.matrix.matrix) {
+        converted.push(
+          row.map(n => {
+            if (n === 10) return 't';
+            if (n === 11) return 'e';
+            return n.toString();
+          })
+        )
+      }
+    }
+    return converted;
+  }
+
+  emptyArray() {
+    return Array(12);
+  }
+
+  shrinkingArray(arr: any[]) {
+    return Array(12 - arr.length);
   }
 
   labelClick(label: string) {

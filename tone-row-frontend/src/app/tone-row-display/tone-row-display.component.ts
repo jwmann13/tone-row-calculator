@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ComposerWorkService } from '../composer-work.service';
 import { ToneRow } from '../models/ToneRow';
+import { ToneRowService } from '../tone-row.service';
 
 export enum ToneRowDisplayOptions {
   FLATS = 1,
@@ -21,7 +21,7 @@ export class ToneRowDisplayComponent implements OnInit {
   composers: string[];
   displaying: ToneRowDisplayOptions;
 
-  constructor(private service: ComposerWorkService) {
+  constructor(private service: ToneRowService) {
     this.toneRow = null;
     this.workTitle = null;
     this.composers = [];

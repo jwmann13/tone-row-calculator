@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { faSave } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ComposerWorkService } from '../composer-work.service';
+import { ToneRowService } from '../tone-row.service';
 
 @Component({
   selector: 'app-new-matrix',
@@ -18,7 +18,7 @@ export class NewMatrixComponent implements OnInit {
   composer: string;
   @Output() saveEvent: EventEmitter<{ toneRow: number[] }> = new EventEmitter<{ toneRow: number[] }>();
 
-  constructor(private modalService: NgbModal, private cwService: ComposerWorkService, private router: Router) {
+  constructor(private modalService: NgbModal, private trService: ToneRowService, private router: Router) {
     this.newRow = [];
     this.tempMatrix = [];
     this.buttonStack = [];
@@ -69,7 +69,7 @@ export class NewMatrixComponent implements OnInit {
   save() {
     const composers = this.composer.split(",").map(c => c.trim());
     if (this.newRow.length === 12 && this.composer && this.work) {
-      this.cwService.postToneRowMeta(this.newRow, composers, this.work)
+      this.trService.postToneRowMeta(this.newRow, composers, this.work)
       .subscribe(data => {
         this.modalService.dismissAll("Tone Row Saved");
         this.router.navigateByUrl("");
