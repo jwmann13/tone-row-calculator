@@ -33,4 +33,9 @@ public class WorkInMemDao implements WorkDao {
     public boolean exists(String workTitle) {
         return false;
     }
+
+    @Override
+    public Work deleteWorkById(Integer workId) {
+        throw new UnsupportedOperationException();
+    }
 }

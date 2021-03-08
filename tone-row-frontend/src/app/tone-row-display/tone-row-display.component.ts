@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ToneRow } from '../models/ToneRow';
-import { ToneRowService } from '../tone-row.service';
+import { ToneRowMeta, ToneRowService } from '../tone-row.service';
 
 export enum ToneRowDisplayOptions {
   FLATS = 1,
@@ -16,12 +16,14 @@ export enum ToneRowDisplayOptions {
 })
 export class ToneRowDisplayComponent implements OnInit {
 
-  @Input() toneRow: ToneRow | null;
+  @Input() details: ToneRowMeta | null;
+  toneRow: ToneRow | null;
   workTitle: string | null;
   composers: string[];
   displaying: ToneRowDisplayOptions;
 
   constructor(private service: ToneRowService) {
+    this.details = null;
     this.toneRow = null;
     this.workTitle = null;
     this.composers = [];
@@ -29,17 +31,22 @@ export class ToneRowDisplayComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.toneRow && this.toneRow.toneRowId && this.toneRow.workId) {
-      this.service.getToneRowMeta(this.toneRow.toneRowId)
-        .subscribe(meta => {
-          if (meta?.work) {
-            this.workTitle = meta.work.title;
-          }
-          if (meta?.composers) {
-            this.composers = meta.composers.map(c => c.name);
-          }
-        })
+    if (this.details) {
+      this.toneRow = this.details.toneRow;
+      this.workTitle = this.details.work? this.details.work.title : null;
+      this.composers = this.details.composers ? this.details.composers.map(c => c.name) : [];
     }
+    // if (this.toneRow && this.toneRow.toneRowId && this.toneRow.workId) {
+    //   this.service.getToneRowMeta(this.toneRow.toneRowId)
+    //     .subscribe(meta => {
+    //       if (meta?.work) {
+    //         this.workTitle = meta.work.title;
+    //       }
+    //       if (meta?.composers) {
+    //         this.composers = meta.composers.map(c => c.name);
+    //       }
+    //     })
+    // }
   }
 
   toggleDisplay(option: number) {
@@ -62,8 +69,8 @@ export class ToneRowDisplayComponent implements OnInit {
   }
 
   convertToneRowToPCChar(): string[] {
-    if (this.toneRow) {
-      return this.toneRow.noteOrder.map(n => {
+    if (this.details) {
+      return this.details.toneRow.noteOrder.map(n => {
         if (n.pitchClass === 10) return 't';
         if (n.pitchClass === 11) return 'e';
         return n.pitchClass.toString();

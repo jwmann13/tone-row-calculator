@@ -13,4 +13,6 @@ public interface NoteDao {
     Note createNote(int pitchClass, int orderIndex, Integer toneRowId);
 
     List<Note> getNotesForToneRow(Integer toneRowId);
+
+    List<Note> deleteNotesForToneRow(Integer toneRowId);
 }

@@ -53,4 +53,9 @@ public class NoteInMemDao implements NoteDao {
     public List<Note> getNotesForToneRow(Integer toneRowId) {
         return allNotes.get(toneRowId);
     }
+
+    @Override
+    public List<Note> deleteNotesForToneRow(Integer toneRowId) {
+        throw new UnsupportedOperationException();
+    }
 }

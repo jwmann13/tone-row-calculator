@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Matrix } from '../models/Matrix';
 import { ToneRowDisplayOptions } from '../tone-row-display/tone-row-display.component';
 import { ToneRowService } from '../tone-row.service';
@@ -15,7 +16,12 @@ export class ShowMatrixComponent implements OnInit {
   composers: string[];
   displaying: ToneRowDisplayOptions;
 
-  constructor(private service: ToneRowService, private route: ActivatedRoute) {
+  constructor(
+    private modalService: NgbModal,
+    private service: ToneRowService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
     this.matrix = null;
     this.workTitle = null;
     this.composers = [];
@@ -29,13 +35,31 @@ export class ShowMatrixComponent implements OnInit {
       this.service.getMatrix(matrixId).subscribe(data => this.matrix = data);
       this.service.getToneRowMeta(matrixId).subscribe(data => {
         if (data) {
-          let {work, composers} = data;
+          let { work, composers } = data;
           if (work) this.workTitle = work?.title;
           if (composers) this.composers = composers.map(c => c.name);
         }
 
       })
     }
+  }
+
+  open(modal: any) {
+    this.modalService.open(modal).result.then(
+      result => {
+        console.log(result);
+      }, reason => {
+        console.log(reason);
+      });
+  }
+
+  delete() {
+    const routeMap = this.route.snapshot.paramMap;
+    const matrixId = Number(routeMap.get("toneRowId"));
+    this.service.deleteToneRow(matrixId).subscribe(data => {
+      this.modalService.dismissAll("Tone Row Saved");
+      this.router.navigateByUrl("");
+    });
   }
 
 }

@@ -68,6 +68,17 @@ public class MatrixController {
         return ResponseEntity.ok(toReturn);
     }
 
+    @GetMapping(value = "tonerow/meta")
+    public ResponseEntity getAllToneRowMeta() {
+        List<ToneRowMeta> toReturn;
+        try {
+            toReturn = service.getAllToneRowMeta();
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        return ResponseEntity.ok(toReturn);
+    }
+
     @GetMapping(value = "tonerow/meta", params = {"id"})
     public ResponseEntity getToneRowMeta(@RequestParam Integer id) {
         ToneRowMeta toReturn;
@@ -199,6 +210,17 @@ public class MatrixController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
         return ResponseEntity.ok(toReturn);
+    }
+
+    @DeleteMapping(value = "/tonerow/delete", params = {"id"})
+    public ResponseEntity deleteToneRow(@RequestParam Integer id) {
+        ToneRow deleted;
+        try {
+            deleted = service.deleteToneRow(id);
+        } catch (InvalidIdException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        return ResponseEntity.ok(deleted);
     }
 
 }

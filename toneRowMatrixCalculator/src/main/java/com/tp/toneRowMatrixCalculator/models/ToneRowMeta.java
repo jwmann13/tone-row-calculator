@@ -3,22 +3,22 @@ package com.tp.toneRowMatrixCalculator.models;
 import java.util.List;
 
 public class ToneRowMeta {
-    Integer toneRowId;
+    ToneRow toneRow;
     Work work;
     List<Composer> composers;
 
-    public ToneRowMeta(Integer toneRowId, Work work, List<Composer> composers) {
-        this.toneRowId = toneRowId;
+    public ToneRowMeta(ToneRow toneRow, Work work, List<Composer> composers) {
+        this.toneRow = toneRow;
         this.work = work;
         this.composers = composers;
     }
 
-    public Integer getToneRowId() {
-        return toneRowId;
+    public ToneRow getToneRow() {
+        return toneRow;
     }
 
-    public void setToneRowId(Integer toneRowId) {
-        this.toneRowId = toneRowId;
+    public void setToneRow(ToneRow toneRow) {
+        this.toneRow = toneRow;
     }
 
     public Work getWork() {

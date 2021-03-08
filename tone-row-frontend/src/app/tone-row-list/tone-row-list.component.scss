@@ -1,0 +1,18 @@
+@import '~bootstrap/scss/bootstrap';
+
+th[sortable] {
+    cursor: pointer;
+}
+
+th[sortable].desc::after, th[sortable].asc::after {
+    content: "^";
+    display: inline-block;
+    width: $spacer;
+    margin: 0 map-get($map: $spacers, $key: 3);
+}
+
+th[sortable].desc::after {
+    transform: rotate(90deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+}

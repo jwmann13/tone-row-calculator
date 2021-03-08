@@ -36,6 +36,14 @@ public class NotePostgresDao implements NoteDao {
                 toneRowId);
     }
 
+    @Override
+    public List<Note> deleteNotesForToneRow(Integer toneRowId) {
+        return template.query("DELETE FROM \"notes\" WHERE \"notes\".\"toneRowId\"=?\n" +
+                        "RETURNING \"noteId\", \"pitchClass\", \"noteOrder\", \"toneRowId\";",
+                new NoteMapper(),
+                toneRowId);
+    }
+
     private static class NoteMapper implements RowMapper<Note> {
 
         @Override

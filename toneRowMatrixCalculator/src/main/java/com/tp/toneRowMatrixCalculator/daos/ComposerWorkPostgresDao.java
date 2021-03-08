@@ -5,6 +5,7 @@ import com.tp.toneRowMatrixCalculator.models.ComposerWork;
 import com.tp.toneRowMatrixCalculator.models.Work;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -21,29 +22,25 @@ public class ComposerWorkPostgresDao implements ComposerWorkDao {
 
     @Override
     public boolean exists(Integer workId, Integer composerId) {
-        List<ComposerWork> results = getComposerWork(workId, composerId);
-        if (results == null) return false;
-        for (ComposerWork cw : results) {
-            if (cw == null) return false;
-        }
-        return true;
+        ComposerWork results = getComposerWork(workId, composerId);
+        return results != null;
     }
 
     @Override
-    public List<ComposerWork> getComposerWork(Integer workId, Integer composerId)  {
-        List<ComposerWork> results = template.query("SELECT \"workId\", \"composerId\" " +
-                        "FROM \"composerWorks\" " +
-                        "WHERE \"workId\"=? AND \"composerId\"=?;",
-                new ComposerWorkMapper(),
-                workId,
-                composerId
-        );
-
-        if (results.isEmpty()) {
+    public ComposerWork getComposerWork(Integer workId, Integer composerId) {
+        ComposerWork results;
+        try {
+            results = template.queryForObject("SELECT \"workId\", \"composerId\" " +
+                            "FROM \"composerWorks\" " +
+                            "WHERE \"workId\"=? AND \"composerId\"=?;",
+                    new ComposerWorkMapper(),
+                    workId,
+                    composerId
+            );
+        } catch (DataAccessException e) {
             return null;
-        } else {
-            return results;
         }
+        return results;
     }
 
     @Override
@@ -69,6 +66,14 @@ public class ComposerWorkPostgresDao implements ComposerWorkDao {
                 composer.getComposerId(),
                 work.getWorkId()
         );
+    }
+
+    @Override
+    public ComposerWork deleteComposerWorkByWorkId(Integer workId) {
+        return template.queryForObject("DELETE FROM \"composerWorks\" WHERE \"composerWorks\".\"workId\" = ?\n" +
+                        "RETURNING \"workId\", \"composerId\";",
+                new ComposerWorkMapper(),
+                workId);
     }
 
     private static class ComposerWorkMapper implements RowMapper<ComposerWork> {

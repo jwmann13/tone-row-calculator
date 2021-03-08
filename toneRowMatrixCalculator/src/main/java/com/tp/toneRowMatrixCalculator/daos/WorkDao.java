@@ -19,4 +19,6 @@ public interface WorkDao {
     Work getWorkByTitle(String workTitle);
 
     boolean exists(String workTitle);
+
+    Work deleteWorkById(Integer workId);
 }

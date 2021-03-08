@@ -98,6 +98,14 @@ public class WorkPostgresDao implements WorkDao{
         return getWorkByTitle(workTitle) != null;
     }
 
+    @Override
+    public Work deleteWorkById(Integer workId) {
+        return template.queryForObject("DELETE FROM \"works\" WHERE \"works\".\"workId\" = ?\n" +
+                "RETURNING \"workId\", \"title\";",
+                new WorkMapper(),
+                workId);
+    }
+
     private static class WorkMapper implements RowMapper<Work> {
 
         @Override

@@ -51,4 +51,9 @@ public class ToneRowInMemDao implements ToneRowDao {
 
         return toCreate;
     }
+
+    @Override
+    public ToneRow deleteToneRowById(Integer toneRowId) {
+        throw new UnsupportedOperationException();
+    }
 }

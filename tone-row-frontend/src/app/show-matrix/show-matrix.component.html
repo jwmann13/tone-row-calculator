@@ -1,2 +1,18 @@
-<h4 class="text-center">{{workTitle}} by {{composers.join(", ")}}</h4>
+<ng-template #deleteModal let-modal id="saveModal">
+    <div class="modal-header">
+        <h5 class="modal-title" id="SaveModalLabel">Are you sure?</h5>
+        <button type="button" class="btn-close" (click)="modal.dismiss('Closed')" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <p>You are about to delete this Matrix and all data associated with it. You cannot change this!</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Closed')">Close</button>
+        <button type="button" class="btn btn-danger" (click)="delete()">I understand</button>
+    </div>
+</ng-template>
+<div class="d-flex flex-row justify-content-end">
+    <h4 class="text-center flex-grow-1">{{workTitle}} by {{composers.join(", ")}}</h4>
+    <button class="btn btn-danger" (click)="open(deleteModal)">Delete Matrix</button>
+</div>
 <matrix-display [matrix]="matrix" [displaying]="displaying"></matrix-display>

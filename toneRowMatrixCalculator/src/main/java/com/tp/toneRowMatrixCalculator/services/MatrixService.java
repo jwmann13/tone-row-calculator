@@ -65,7 +65,7 @@ public class MatrixService {
         return toReturn;
     }
 
-        // helper to set notes on each ToneRow
+    // helper to set notes on each ToneRow
     private void setNoteOrderForToneRow(ToneRow toSet) {
         List<Note> noteList = noteDao.getNotesForToneRow(toSet.getToneRowId());
 
@@ -109,7 +109,7 @@ public class MatrixService {
         return newToneRow;
     }
 
-        // helper to prevent duplicate notes on ToneRow
+    // helper to prevent duplicate notes on ToneRow
     private boolean hasDuplicates(Integer[] noteOrder) {
         Set<Integer> seen = new HashSet<Integer>();
         for (Integer i : noteOrder) {
@@ -119,7 +119,7 @@ public class MatrixService {
         return false;
     }
 
-        // helper to create notes on each ToneRow
+    // helper to create notes on each ToneRow
     private Note[] createNotesOnToneRow(Integer[] noteOrder, Integer toneRowId) {
         Note[] toReturn = new Note[12];
         for (int orderIndex = 0; orderIndex < 12; orderIndex++) {
@@ -127,6 +127,17 @@ public class MatrixService {
             toReturn[orderIndex] = noteDao.createNote(pitchClass, orderIndex, toneRowId);
         }
         return toReturn;
+    }
+
+    // DELETE for ToneRow
+    public ToneRow deleteToneRow(Integer id) throws InvalidIdException {
+        if (id == null) throw new InvalidIdException("Cannot delete with null id");
+        noteDao.deleteNotesForToneRow(id);
+        ToneRow deleted = toneRowDao.deleteToneRowById(id);
+        if (deleted == null) throw new InvalidIdException("No Tone Row with that id exists");
+        composerWorkDao.deleteComposerWorkByWorkId(deleted.getWorkId());
+        workDao.deleteWorkById(deleted.getWorkId());
+        return deleted;
     }
 
     // GETs for Works and Composers
@@ -182,7 +193,11 @@ public class MatrixService {
     }
 
     public ComposerWork createComposerWork(Work work, Composer composer) {
-        return composerWorkDao.createComposerWork(work, composer);
+        if (composerWorkDao.exists(work.getWorkId(), composer.getComposerId())) {
+            return composerWorkDao.getComposerWork(work.getWorkId(), composer.getComposerId());
+        } else {
+            return composerWorkDao.createComposerWork(work, composer);
+        }
     }
 
     public ToneRowMeta getToneRowMeta(Integer id) throws InvalidIdException {
@@ -195,18 +210,15 @@ public class MatrixService {
 
         Work associatedWork = workDao.getWorkById(toMap.getWorkId());
 
-        List<ComposerWork> composersMap = composerWorkDao
-                .getComposerWorkByWorkId(associatedWork.getWorkId());
+        List<ComposerWork> composersMap = getComposerWorksByWorkId(associatedWork.getWorkId());
 
         List<Composer> associatedComposers = new ArrayList<>();
 
         for (ComposerWork cw : composersMap) {
-            associatedComposers.add(
-                    composerDao.getComposerById(cw.getComposerId())
-            );
+            associatedComposers.add(getComposerById(cw.getComposerId()));
         }
 
-        return new ToneRowMeta(id, associatedWork, associatedComposers);
+        return new ToneRowMeta(toMap, associatedWork, associatedComposers);
     }
 
     public ToneRowMeta createToneRowWithDetails(Integer[] noteOrder, String work, List<String> composers) {
@@ -219,12 +231,30 @@ public class MatrixService {
 //        List<ComposerWork> createdComposerWorks = new ArrayList<>();
         for (Composer c : createdComposers) {
 //            createdComposerWorks.add(
-                    createComposerWork(createdWork, c);
+            createComposerWork(createdWork, c);
 //            );
         }
 
         ToneRow createdToneRow = createToneRow(noteOrder, createdWork.getWorkId());
 
-        return new ToneRowMeta(createdToneRow.getToneRowId(), createdWork, createdComposers);
+        return new ToneRowMeta(createdToneRow, createdWork, createdComposers);
+    }
+
+    public List<ToneRowMeta> getAllToneRowMeta() {
+        List<ToneRowMeta> toReturn = new ArrayList<>();
+        Map<Integer, ToneRow> toMap = getAllToneRows();
+
+        for (Integer key : toMap.keySet()) {
+            Work associatedWork = getWorkById(toMap.get(key).getWorkId());
+            List<ComposerWork> composerWorks = getComposerWorksByWorkId(associatedWork.getWorkId());
+            List<Composer> associatedComposers = new ArrayList<>();
+            for (ComposerWork cw : composerWorks) {
+                associatedComposers.add(getComposerById(cw.getComposerId()));
+            }
+
+            toReturn.add(new ToneRowMeta(toMap.get(key), associatedWork, associatedComposers));
+        }
+
+        return toReturn;
     }
 }

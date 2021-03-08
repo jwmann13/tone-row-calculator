@@ -58,6 +58,14 @@ public class ToneRowPostgresDao implements ToneRowDao {
                 workId);
     }
 
+    @Override
+    public ToneRow deleteToneRowById(Integer toneRowId) {
+        return template.queryForObject("DELETE FROM \"toneRows\" WHERE \"toneRows\".\"toneRowId\"=?\n" +
+                "RETURNING \"toneRowId\", \"workId\";",
+                new ToneRowMapper(),
+                toneRowId);
+    }
+
     private static class ToneRowMapper implements RowMapper<ToneRow> {
         @Override
         public ToneRow mapRow(ResultSet resultSet, int i) throws SQLException {

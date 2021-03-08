@@ -17,4 +17,6 @@ public interface ToneRowDao {
     ToneRow getToneRowById(Integer toneRowId);
 
     ToneRow createToneRow(Integer workId);
+
+    ToneRow deleteToneRowById(Integer toneRowId);
 }

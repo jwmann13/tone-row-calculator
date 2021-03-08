@@ -25,9 +25,9 @@ export interface Composer {
 }
 
 export interface ToneRowMeta {
-  toneRowId: number;
-  work?: Work;
-  composers?: Composer[];
+  toneRow: ToneRow;
+  work: Work;
+  composers: Composer[];
 }
 
 @Injectable({
@@ -91,16 +91,35 @@ export class ToneRowService {
       )
   }
 
+  getAllToneRowMeta(): Observable<ToneRowMeta[]> {
+    return this.http.get<ToneRowMeta[]>(this.baseURL + "/tonerow/meta", this.httpProperties)
+    .pipe(
+      catchError(err => {
+        console.log(err);
+        return of([]);
+      })
+    )
+  }
+
   postToneRowMeta(noteOrder: number[], composers: string[], work: string): Observable<ToneRowMeta | null> {
     return this.http.post<ToneRowMeta | null>(this.baseURL + "/tonerow/meta",
       { noteOrder, work, composers },
       this.httpProperties)
       .pipe(
-        tap(x => console.log(x)),
         catchError(err => {
           console.log(err);
           return of(null);
         })
       )
+  }
+
+  deleteToneRow(id: number): Observable<ToneRow | null> {
+    return this.http.delete<ToneRow | null>(this.baseURL + `/tonerow/delete?id=${id}`, this.httpProperties)
+    .pipe(
+      catchError(err => {
+        console.log(err);
+        return of(null);
+      })
+    )
   }
 }
