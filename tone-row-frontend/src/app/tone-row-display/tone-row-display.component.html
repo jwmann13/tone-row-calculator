@@ -5,22 +5,22 @@
     {{composers.join(", ")}}
 </td>
 <td *ngIf="toneRow" [ngSwitch]="displaying" class="col-3">
-    <a href="/matrix/{{toneRow.toneRowId}}" *ngSwitchCase="1">
+    <a href="/matrix/{{toneRow.toneRowId}}" *ngSwitchCase="1" class="link-dark">
         <span *ngFor="let note of toneRow.noteOrder">
             {{!note.accidental ? note.naturalName : note.flatName }}
         </span>
     </a>
-    <a href="/matrix/{{toneRow.toneRowId}}" *ngSwitchCase="2">
+    <a href="/matrix/{{toneRow.toneRowId}}" *ngSwitchCase="2" class="link-dark">
         <span *ngFor="let note of toneRow.noteOrder">
             {{!note.accidental ? note.naturalName : note.sharpName }}
         </span>
     </a>
-    <a href="/matrix/{{toneRow.toneRowId}}" *ngSwitchCase="3">
+    <a href="/matrix/{{toneRow.toneRowId}}" *ngSwitchCase="3" class="link-dark">
         <span *ngFor="let note of toneRow.noteOrder">
             {{note.pitchClass}}
         </span>
     </a>
-    <a href="/matrix/{{toneRow.toneRowId}}" *ngSwitchCase="4">
+    <a href="/matrix/{{toneRow.toneRowId}}" *ngSwitchCase="4" class="link-dark">
         <span *ngFor="let note of convertToneRowToPCChar()">
             {{note}}
         </span>

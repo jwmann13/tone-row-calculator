@@ -1,4 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+$custom-colors: (
+    "secondary-light": rgba(162, 197, 226, 0.3),
+);
+$primary: rgb(243, 207, 0);
+$secondary: rgb(162, 197, 226);
 
 /* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
+@import "~bootstrap/scss/bootstrap";
+
+$theme-colors: map-merge(
+    $map1: $theme-colors,
+    $map2: $custom-colors,
+);
+// @import 'app/app.component.scss';
+// @import 'app/new-matrix/new-matrix.component.scss';
+// @import 'app/show-matrix/show-matrix.component.scss';
+// @import 'app/matrix-display/matrix-display.component.scss';
+// @import 'app/row-staff-display/row-staff-display.component.scss';
+// @import 'app/tone-row-list/tone-row-list.component.scss';
+// @import 'app/tone-row-display/tone-row-display.component.scss';

@@ -1,0 +1,10 @@
+@import "../styles.scss";
+
+header {
+    padding: 0 $spacer;
+    background-color: map-get($map: $theme-colors, $key: "secondary-light");
+    margin-bottom: $spacer;
+    .navbar-brand {
+        color: $dark;
+    }
+}
