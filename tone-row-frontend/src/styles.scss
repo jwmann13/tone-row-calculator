@@ -1,21 +1,62 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@600&display=swap');
+
+$font-size-root: 18px;
+$font-family-sans-serif: 'Assistant', sans-serif;
+$font-family-monospace: 'Assistant', sans-serif;
+
 $custom-colors: (
     "secondary-light": rgba(162, 197, 226, 0.3),
 );
 $primary: rgb(243, 207, 0);
 $secondary: rgb(162, 197, 226);
+// $danger: rgb(255, 130, 130);
 
 /* Importing Bootstrap SCSS file. */
-@import "~bootstrap/scss/bootstrap";
+// @import "~bootstrap/scss/bootstrap";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/utilities";
 
 $theme-colors: map-merge(
     $map1: $theme-colors,
     $map2: $custom-colors,
 );
-// @import 'app/app.component.scss';
-// @import 'app/new-matrix/new-matrix.component.scss';
-// @import 'app/show-matrix/show-matrix.component.scss';
-// @import 'app/matrix-display/matrix-display.component.scss';
-// @import 'app/row-staff-display/row-staff-display.component.scss';
-// @import 'app/tone-row-list/tone-row-list.component.scss';
-// @import 'app/tone-row-display/tone-row-display.component.scss';
+
+// Optional
+@import "~bootstrap/scss/root";
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/type";
+// @import "~bootstrap/scss/images";
+@import "~bootstrap/scss/containers";
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/tables";
+@import "~bootstrap/scss/forms";
+@import "~bootstrap/scss/buttons";
+@import "~bootstrap/scss/transitions";
+@import "~bootstrap/scss/dropdown";
+@import "~bootstrap/scss/button-group";
+@import "~bootstrap/scss/nav";
+@import "~bootstrap/scss/navbar";
+// @import "~bootstrap/scss/card";
+// @import "~bootstrap/scss/accordion";
+@import "~bootstrap/scss/breadcrumb";
+@import "~bootstrap/scss/pagination";
+@import "~bootstrap/scss/badge";
+@import "~bootstrap/scss/alert";
+@import "~bootstrap/scss/progress";
+@import "~bootstrap/scss/list-group";
+@import "~bootstrap/scss/close";
+@import "~bootstrap/scss/toasts";
+@import "~bootstrap/scss/modal";
+@import "~bootstrap/scss/tooltip";
+@import "~bootstrap/scss/popover";
+// @import "~bootstrap/scss/carousel";
+@import "~bootstrap/scss/spinners";
+
+// Helpers
+@import "~bootstrap/scss/helpers";
+
+// Utilities
+@import "~bootstrap/scss/utilities/api";

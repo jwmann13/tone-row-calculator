@@ -4,6 +4,9 @@
 
 .note-btn {
     width: 2.5em;
+    &.btn-outline-secondary {
+        color: $dark;
+    }
 }
 
 @include media-breakpoint-up(sm) {
