@@ -135,8 +135,12 @@ public class MatrixService {
         noteDao.deleteNotesForToneRow(id);
         ToneRow deleted = toneRowDao.deleteToneRowById(id);
         if (deleted == null) throw new InvalidIdException("No Tone Row with that id exists");
-        composerWorkDao.deleteComposerWorkByWorkId(deleted.getWorkId());
-        workDao.deleteWorkById(deleted.getWorkId());
+
+        if (toneRowDao.getToneRowsByWorkId(deleted.getWorkId()).size() == 0) {
+            composerWorkDao.deleteComposerWorkByWorkId(deleted.getWorkId());
+            workDao.deleteWorkById(deleted.getWorkId());
+        }
+
         return deleted;
     }
 
@@ -168,11 +172,11 @@ public class MatrixService {
     // POSTs for Works and Composers
     public Work createWork(String workTitle) {
         Work toReturn;
-//        if (workDao.exists(workTitle)) {
-//            toReturn = workDao.getWorkByTitle(workTitle);
-//        } else {
+        if (workDao.exists(workTitle)) {
+            toReturn = workDao.getWorkByTitle(workTitle);
+        } else {
             toReturn = workDao.createWork(workTitle);
-//        }
+        }
         return toReturn;
     }
 

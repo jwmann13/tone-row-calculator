@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -54,6 +55,11 @@ public class ToneRowInMemDao implements ToneRowDao {
 
     @Override
     public ToneRow deleteToneRowById(Integer toneRowId) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public List<ToneRow> getToneRowsByWorkId(Integer workId) {
         throw new UnsupportedOperationException();
     }
 }

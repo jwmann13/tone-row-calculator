@@ -66,6 +66,13 @@ public class ToneRowPostgresDao implements ToneRowDao {
                 toneRowId);
     }
 
+    @Override
+    public List<ToneRow> getToneRowsByWorkId(Integer workId) {
+        return template.query("SELECT \"toneRowId\", \"workId\" FROM \"toneRows\" WHERE \"workId\" = ?;\n",
+                new ToneRowMapper(),
+                workId);
+    }
+
     private static class ToneRowMapper implements RowMapper<ToneRow> {
         @Override
         public ToneRow mapRow(ResultSet resultSet, int i) throws SQLException {

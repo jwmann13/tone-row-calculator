@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -19,4 +20,6 @@ public interface ToneRowDao {
     ToneRow createToneRow(Integer workId);
 
     ToneRow deleteToneRowById(Integer toneRowId);
+
+    List<ToneRow> getToneRowsByWorkId(Integer workId);
 }
