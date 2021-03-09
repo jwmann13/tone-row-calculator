@@ -12,7 +12,7 @@ th[sortable].desc::after, th[sortable].asc::after {
 }
 
 th[sortable].desc::after {
-    transform: rotate(90deg);
+    transform: rotate(180deg);
     -moz-transform: rotate(180deg);
     -ms-transform: rotate(180deg);
 }

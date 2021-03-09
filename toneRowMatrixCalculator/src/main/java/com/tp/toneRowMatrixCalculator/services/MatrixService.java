@@ -168,11 +168,11 @@ public class MatrixService {
     // POSTs for Works and Composers
     public Work createWork(String workTitle) {
         Work toReturn;
-        if (workDao.exists(workTitle)) {
-            toReturn = workDao.getWorkByTitle(workTitle);
-        } else {
+//        if (workDao.exists(workTitle)) {
+//            toReturn = workDao.getWorkByTitle(workTitle);
+//        } else {
             toReturn = workDao.createWork(workTitle);
-        }
+//        }
         return toReturn;
     }
 
