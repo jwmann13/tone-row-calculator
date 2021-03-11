@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChanges } from '@angular/core';
-import { ActivatedRoute } from '@angular/router'
 import { Matrix } from '../models/Matrix';
+import { Note } from '../models/Note';
 import { ToneRowDisplayOptions } from '../tone-row-display/tone-row-display.component';
-import { ToneRowService } from '../tone-row.service';
 
 @Component({
   selector: 'matrix-display',
@@ -20,7 +19,7 @@ export class MatrixDisplayComponent implements OnInit, OnChanges {
   tempRetrogradeInversionLabels: string[];
   selectedLabel: string = "P0";
 
-  constructor(private service: ToneRowService, private route: ActivatedRoute) {
+  constructor() {
     this.matrix = null;
     this.tempMatrix = null;
     this.tempPrimeLabels = [];
@@ -40,13 +39,6 @@ export class MatrixDisplayComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    // const routeMap = this.route.snapshot.paramMap;
-    // const matrixId = Number(routeMap.get("toneRowId"));
-    // if (matrixId) {
-    //   this.service.getMatrix(matrixId).subscribe(data => {
-    //     this.matrix = data;
-    //   });
-    // }
   }
 
   toggleDisplay(option: number) {
@@ -84,6 +76,24 @@ export class MatrixDisplayComponent implements OnInit, OnChanges {
     return converted;
   }
 
+  selectedToneRow(): Note[] {
+    if (this.matrix) {
+      switch (this.selectedLabel.slice(0, 1)) {
+        case "P":
+          return this.matrix.primes[this.selectedLabel].noteOrder;
+        case "I":
+          return this.matrix.inversions[this.selectedLabel].noteOrder;
+        case "R":
+          return this.selectedLabel.slice(0, 2) === "RI" ?
+            this.matrix.retrogradeInversions[this.selectedLabel].noteOrder :
+            this.matrix.retrogrades[this.selectedLabel].noteOrder
+        default:
+          break;
+      }
+    }
+    return [];
+  }
+
   emptyArray() {
     return Array(12);
   }
@@ -93,7 +103,6 @@ export class MatrixDisplayComponent implements OnInit, OnChanges {
   }
 
   labelClick(label: string) {
-    console.log(label);
     this.selectedLabel = label;
   }
 

@@ -11,8 +11,8 @@
         <button type="button" class="btn btn-danger" (click)="delete()">I understand</button>
     </div>
 </ng-template>
-<div class="d-flex flex-row justify-content-end">
-    <h4 class="text-center flex-grow-1">{{workTitle}} by {{composers.join(", ")}}</h4>
-    <button class="btn btn-danger" (click)="open(deleteModal)">Delete Matrix</button>
+<div class="d-inline-block clear-fix w-100">
+    <h4 class="float-start position-absolute start-50 align-middle translate-middle-x">{{workTitle}} by {{composers.join(", ")}}</h4>
+    <button class="btn btn-danger float-end me-3" (click)="open(deleteModal)">Delete Matrix</button>
 </div>
 <matrix-display [matrix]="matrix" [displaying]="displaying"></matrix-display>

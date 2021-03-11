@@ -8,7 +8,7 @@
         <p>Please add a Title and Composer to your row so that we can keep track of it</p>
         <form>
             <div class="mb-3">
-                <label class="form-label" for="work">
+                <label class="form-label me-2" for="work">
                     Work Title:
                     <input class="form-control" type="text" name="work" [(ngModel)]="work">
                 </label>
@@ -27,16 +27,16 @@
 <div class="row text-center mb-3">
     <matrix-display [tempMatrix]="tempMatrix" class="col-12"></matrix-display>
 
-    <div class="d-inline-block text-center col-8">
-        <div class="">
+    <div class="d-inline-block text-center col-lg-8 col-12">
+        <div class="mb-1 mb-lg-0">
             <button (click)="addToRow($event, 1)" class="note-btn btn btn-secondary m-1">C#</button>
             <button (click)="addToRow($event, 3)" class="note-btn btn btn-secondary m-1">D#</button>
-            <div class="spacer d-inline-block p-4"></div>
+            <div class="spacer d-inline-block p-lg-4 p-3"></div>
             <button (click)="addToRow($event, 6)" class="note-btn btn btn-secondary m-1">F#</button>
             <button (click)="addToRow($event, 8)" class="note-btn btn btn-secondary m-1">G#</button>
             <button (click)="addToRow($event, 10)" class="note-btn btn btn-secondary m-1">A#</button>
         </div>
-        <div class="">
+        <div class="mb-1 mb-lg-0">
             <button (click)="addToRow($event, 0)" class="note-btn btn btn-outline-secondary m-1">C</button>
             <button (click)="addToRow($event, 2)" class="note-btn btn btn-outline-secondary m-1">D</button>
             <button (click)="addToRow($event, 4)" class="note-btn btn btn-outline-secondary m-1">E</button>
@@ -46,8 +46,11 @@
             <button (click)="addToRow($event, 11)" class="note-btn btn btn-outline-secondary m-1">B</button>
         </div>
     </div>
-    <div class="d-flex flex-column align-items-start justify-content-center col-2">
-        <button (click)="deleteNote()" class="btn btn-primary mb-1">Delete</button>
+    <div class="d-flex flex-lg-column align-items-lg-start align-items-center justify-content-center col-lg-2 col-12">
+        <button (click)="deleteNote()" class="btn btn-primary mb-lg-1 me-2">
+            <fa-icon [icon]="backIcon" class="me-2"></fa-icon>
+            Back
+        </button>
         <button (click)="open(saveModal)" class="btn btn-success" [disabled]="newRow.length < 12">
             <fa-icon [icon]="saveIcon" class="me-2"></fa-icon>
             Save

@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import Vex from 'vexflow';
-import { Matrix } from '../models/Matrix';
 import { Note } from '../models/Note';
 import { ToneRowDisplayOptions } from '../tone-row-display/tone-row-display.component';
 
@@ -11,9 +10,7 @@ import { ToneRowDisplayOptions } from '../tone-row-display/tone-row-display.comp
 })
 export class RowStaffDisplayComponent implements OnInit, OnChanges {
   @Input() displaying: ToneRowDisplayOptions = ToneRowDisplayOptions.FLATS;
-  @Input() matrix: Matrix | null = null;
-  @Input() selectedLabel: string = "P0";
-  noteRow: Note[];
+  @Input() noteRow: Note[];
   noteString: string;
   VF = Vex.Flow;
   vf: Vex.Flow.Factory | undefined = undefined;
@@ -27,24 +24,7 @@ export class RowStaffDisplayComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.matrix) {
-      switch (this.selectedLabel.slice(0, 1)) {
-        case "P":
-          this.noteRow = this.matrix.primes[this.selectedLabel].noteOrder;
-          break;
-        case "I":
-          this.noteRow = this.matrix.inversions[this.selectedLabel].noteOrder;
-          break;
-        case "R":
-          this.noteRow = this.selectedLabel.slice(0, 2) === "RI" ?
-            this.matrix.retrogradeInversions[this.selectedLabel].noteOrder :
-            this.matrix.retrogrades[this.selectedLabel].noteOrder
-          break;
-        default:
-          break;
-      }
-      this.noteString = RowStaffDisplayComponent.parseNoteRow(this.noteRow, this.displaying);
-    }
+    this.noteString = RowStaffDisplayComponent.parseNoteRow(this.noteRow, this.displaying);
 
     const boo = document.getElementById("boo");
     if (boo) boo.innerHTML = "";
@@ -64,23 +44,6 @@ export class RowStaffDisplayComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    if (this.matrix) {
-      switch (this.selectedLabel.slice(0, 1)) {
-        case "P":
-          this.noteRow = this.matrix.primes[this.selectedLabel].noteOrder;
-          break;
-        case "I":
-          this.noteRow = this.matrix.inversions[this.selectedLabel].noteOrder;
-          break;
-        case "R":
-          this.noteRow = this.selectedLabel.slice(0, 2) === "RI" ?
-            this.matrix.retrogradeInversions[this.selectedLabel].noteOrder :
-            this.matrix.retrogrades[this.selectedLabel].noteOrder
-          break;
-        default:
-          break;
-      }
-    }
     this.noteString = RowStaffDisplayComponent.parseNoteRow(this.noteRow, this.displaying);
 
     this.vf = new this.VF.Factory({ renderer: { elementId: "boo", width: 500, height: 120 } });
@@ -102,13 +65,25 @@ export class RowStaffDisplayComponent implements OnInit, OnChanges {
     for (let note of row) {
       switch (displaying) {
         case 1:
-          noteStr += note.accidental ? `${note.flatName}4, ` : `${note.naturalName}4, `;
+          if (!note.accidental && noteStr.includes(note.naturalName!)) {
+            noteStr += `${note.naturalName}n4, `;
+          } else {
+            noteStr += note.accidental ? `${note.flatName}4, ` : `${note.naturalName}4, `;
+          }
           break;
         case 2:
-          noteStr += note.accidental ? `${note.sharpName}4, ` : `${note.naturalName}4, `;
+          if (!note.accidental && noteStr.includes(note.naturalName!)) {
+            noteStr += `${note.naturalName}n4, `;
+          } else {
+            noteStr += note.accidental ? `${note.sharpName}4, ` : `${note.naturalName}4, `;
+          }
           break;
         default:
-          noteStr += note.accidental ? `${note.flatName}4, ` : `${note.naturalName}4, `;
+          if (!note.accidental && noteStr.includes(note.naturalName!)) {
+            noteStr += `${note.naturalName}n4, `;
+          } else {
+            noteStr += note.accidental ? `${note.flatName}4, ` : `${note.naturalName}4, `;
+          }
           break;
       }
     }
@@ -116,7 +91,6 @@ export class RowStaffDisplayComponent implements OnInit, OnChanges {
     noteStr = noteStr.replace(", ", "/h, ")
 
     noteStr = noteStr.slice(0, noteStr.lastIndexOf(","));
-    console.log(noteStr);
     return noteStr;
   }
 

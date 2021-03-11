@@ -9,6 +9,11 @@
             <input class="form-control" type="text" name="search" placeholder="(ex. Symphony, Schoenberg, CEbG, 037)"
                 [formControl]="filter">
         </div>
+        <div class="col-3 d-flex">
+            <p class="align-self-center mb-0">
+                {{filteredToneRows.length}} results
+            </p>
+        </div>
     </div>
 </form>
 <table class="table">

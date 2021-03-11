@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Matrix } from '../models/Matrix';
+import { Note } from '../models/Note';
 import { ToneRowDisplayOptions } from '../tone-row-display/tone-row-display.component';
 import { ToneRowService } from '../tone-row.service';
 
@@ -46,11 +47,7 @@ export class ShowMatrixComponent implements OnInit {
 
   open(modal: any) {
     this.modalService.open(modal).result.then(
-      result => {
-        console.log(result);
-      }, reason => {
-        console.log(reason);
-      });
+      result => { }, reason => { });
   }
 
   delete() {

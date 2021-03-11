@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { faSave } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faBackward } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToneRowService } from '../tone-row.service';
 
@@ -14,6 +14,7 @@ export class NewMatrixComponent implements OnInit {
   tempMatrix: number[][];
   buttonStack: HTMLButtonElement[];
   saveIcon = faSave;
+  backIcon = faBackward;
   work: string;
   composer: string;
   @Output() saveEvent: EventEmitter<{ toneRow: number[] }> = new EventEmitter<{ toneRow: number[] }>();
@@ -59,11 +60,7 @@ export class NewMatrixComponent implements OnInit {
 
   open(modal: any) {
     this.modalService.open(modal).result.then(
-      result => {
-        console.log(result);
-      }, reason => {
-        console.log(reason);
-      });
+      result => {}, reason => {});
   }
 
   save() {

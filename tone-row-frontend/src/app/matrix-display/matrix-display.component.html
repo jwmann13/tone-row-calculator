@@ -1,12 +1,14 @@
 <div class="row justify-content-center">
-    <row-staff-display *ngIf="matrix" [matrix]="matrix" [selectedLabel]="selectedLabel" [displaying]="displaying">
+    <row-staff-display *ngIf="matrix" [noteRow]="selectedToneRow()" [displaying]="displaying">
     </row-staff-display>
     <table *ngIf="matrix" class="table table-bordered text-center w-50 col-10" [ngSwitch]="displaying">
         <thead>
             <tr class="inv-labels">
                 <th></th>
                 <th *ngFor="let i of matrix.inversionLabelOrder" scope="col" class="row-label" (click)="labelClick(i)"
-                    [class.selected]="selectedLabel===i">{{i}}</th>
+                    [class.selected]="selectedLabel===i">
+                    {{i}}
+                </th>
                 <th></th>
             </tr>
         </thead>
@@ -14,17 +16,22 @@
             <tr *ngFor="let p of matrix.primeLabelOrder; index as i">
                 <th scope="row" class="prime-labels row-label" (click)="labelClick(p)"
                     [class.selected]="selectedLabel===p">
-                    {{matrix.primeLabelOrder[i]}}</th>
-                <td *ngFor="let note of matrix.primes[p].noteOrder">{{note.accidental ? note.flatName :
-                    note.naturalName}} </td>
+                    {{matrix.primeLabelOrder[i]}}
+                </th>
+                <td *ngFor="let note of matrix.primes[p].noteOrder">
+                    {{note.accidental ? note.flatName : note.naturalName}}
+                </td>
                 <th scope="row" class="retro-labels row-label" (click)="labelClick(matrix.retrogradeLabelOrder[i])"
-                    [class.selected]="selectedLabel===matrix.retrogradeLabelOrder[i]">{{matrix.retrogradeLabelOrder[i]}}
+                    [class.selected]="selectedLabel===matrix.retrogradeLabelOrder[i]">
+                    {{matrix.retrogradeLabelOrder[i]}}
                 </th>
             </tr>
             <tr class="retro-inv-labels">
                 <th></th>
                 <th *ngFor="let r of matrix.retrogradeInversionLabelOrder" scope="col" class="row-label"
-                    (click)="labelClick(r)" [class.selected]="selectedLabel===r">{{r}}</th>
+                    (click)="labelClick(r)" [class.selected]="selectedLabel===r">
+                    {{r}}
+                </th>
                 <th></th>
             </tr>
         </tbody>
@@ -32,25 +39,34 @@
             <tr *ngFor="let p of matrix.primeLabelOrder; index as i">
                 <th scope="row" class="prime-labels row-label" (click)="labelClick(p)"
                     [class.selected]="selectedLabel===p">
-                    {{p}}</th>
-                <td *ngFor="let note of matrix.primes[p].noteOrder">{{note.accidental ? note.sharpName :
-                    note.naturalName}} </td>
+                    {{p}}
+                </th>
+                <td *ngFor="let note of matrix.primes[p].noteOrder">
+                    {{note.accidental ? note.sharpName : note.naturalName}}
+                </td>
                 <th scope="row" class="retro-labels row-label" (click)="labelClick(matrix.retrogradeLabelOrder[i])"
-                    [class.selected]="selectedLabel===matrix.retrogradeLabelOrder[i]">{{matrix.retrogradeLabelOrder[i]}}
+                    [class.selected]="selectedLabel===matrix.retrogradeLabelOrder[i]">
+                    {{matrix.retrogradeLabelOrder[i]}}
                 </th>
             </tr>
             <tr class="retro-inv-labels">
                 <th></th>
                 <th *ngFor="let ri of matrix.retrogradeInversionLabelOrder" scope="col" class="row-label"
-                    (click)="labelClick(ri)" [class.selected]="selectedLabel===ri">{{ri}}</th>
+                    (click)="labelClick(ri)" [class.selected]="selectedLabel===ri">
+                    {{ri}}
+                </th>
                 <th></th>
             </tr>
         </tbody>
         <tbody *ngSwitchCase="3">
             <tr *ngFor="let row of matrix.matrix; index as i">
                 <th scope="row" class="prime-labels row-label" (click)="labelClick(matrix.primeLabelOrder[i])"
-                    [class.selected]="selectedLabel===matrix.primeLabelOrder[i]">{{matrix.primeLabelOrder[i]}}</th>
-                <td *ngFor="let pitchClass of row">{{pitchClass}} </td>
+                    [class.selected]="selectedLabel===matrix.primeLabelOrder[i]">
+                    {{matrix.primeLabelOrder[i]}}
+                </th>
+                <td *ngFor="let pitchClass of row">
+                    {{pitchClass}}
+                </td>
                 <th scope="row" class="retro-labels row-label" (click)="labelClick(matrix.retrogradeLabelOrder[i])"
                     [class.selected]="selectedLabel===matrix.retrogradeLabelOrder[i]">
                     {{matrix.retrogradeLabelOrder[i]}}
@@ -59,15 +75,21 @@
             <tr class="retro-inv-labels">
                 <th></th>
                 <th *ngFor="let r of matrix.retrogradeInversionLabelOrder" scope="col" class="row-label"
-                    (click)="labelClick(r)" [class.selected]="selectedLabel===r">{{r}}</th>
+                    (click)="labelClick(r)" [class.selected]="selectedLabel===r">
+                    {{r}}
+                </th>
                 <th></th>
             </tr>
         </tbody>
         <tbody *ngSwitchCase="4">
             <tr *ngFor="let row of convertMatrixToPCChar(); index as i">
                 <th scope="row" class="prime-labels row-label" (click)="labelClick(matrix.primeLabelOrder[i])"
-                    [class.selected]="selectedLabel===matrix.primeLabelOrder[i]">{{matrix.primeLabelOrder[i]}}</th>
-                <td *ngFor="let pitchClass of row">{{pitchClass}} </td>
+                    [class.selected]="selectedLabel===matrix.primeLabelOrder[i]">
+                    {{matrix.primeLabelOrder[i]}}
+                </th>
+                <td *ngFor="let pitchClass of row">
+                    {{pitchClass}}
+                </td>
                 <th scope="row" class="retro-labels row-label" (click)="labelClick(matrix.retrogradeLabelOrder[i])"
                     [class.selected]="selectedLabel===matrix.retrogradeLabelOrder[i]">
                     {{matrix.retrogradeLabelOrder[i]}}
@@ -76,7 +98,9 @@
             <tr class="retro-inv-labels">
                 <th></th>
                 <th *ngFor="let r of matrix.retrogradeInversionLabelOrder" scope="col" class="row-label"
-                    (click)="labelClick(r)" [class.selected]="selectedLabel===r">{{r}}</th>
+                    (click)="labelClick(r)" [class.selected]="selectedLabel===r">
+                    {{r}}
+                </th>
                 <th></th>
             </tr>
         </tbody>

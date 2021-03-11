@@ -1,7 +1,6 @@
 import { Component, Directive, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable, of } from 'rxjs';
-import { startWith, map, take } from 'rxjs/operators';
+import { startWith, map } from 'rxjs/operators';
 import { Composer, ToneRowMeta, ToneRowService, Work } from '../tone-row.service';
 
 // TABLE SORT
@@ -22,7 +21,7 @@ const compare = (v1: Work | Composer[], v2: Work | Composer[]) => {
 }
 
 const instanceOfWork = (w: any) => {
-  return 'title' in w;
+  return 'title' in w && 'workId' in w;
 }
 
 const instanceOfComposerArray = (cArr: any) => {

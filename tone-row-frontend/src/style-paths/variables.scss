@@ -1,0 +1,23 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@600&display=swap');
+
+$font-size-root: 18px;
+$font-family-sans-serif: 'Assistant', sans-serif;
+$font-family-monospace: 'Assistant', sans-serif;
+
+$custom-colors: (
+    "secondary-light": rgba(211, 228, 241, 0.8),
+);
+$primary: rgb(243, 207, 0);
+$secondary: rgb(172, 207, 226);
+
+/* Importing Bootstrap SCSS file. */
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/utilities";
+
+$theme-colors: map-merge(
+    $map1: $theme-colors,
+    $map2: $custom-colors,
+);
