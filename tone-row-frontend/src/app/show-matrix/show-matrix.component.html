@@ -1,4 +1,4 @@
-<ng-template #deleteModal let-modal id="saveModal">
+<ng-template #deleteModal let-modal id="deleteModal">
     <div class="modal-header">
         <h5 class="modal-title" id="SaveModalLabel">Are you sure?</h5>
         <button type="button" class="btn-close" (click)="modal.dismiss('Closed')" aria-label="Close"></button>
@@ -14,5 +14,14 @@
 <div class="d-inline-block clear-fix w-100">
     <h4 class="float-start position-absolute start-50 align-middle translate-middle-x">{{workTitle}} by {{composers.join(", ")}}</h4>
     <button class="btn btn-danger float-end me-3" (click)="open(deleteModal)">Delete Matrix</button>
+    <a *ngIf="matrix" class="btn btn-primary float-end" href="/matrix/edit/{{matrix.primes['P0'].toneRowId}}">
+        <fa-icon [icon]="editIcon" class="me-2"></fa-icon>
+        Edit
+    </a>
 </div>
 <matrix-display [matrix]="matrix" [displaying]="displaying"></matrix-display>
+<div *ngIf="!matrix" class="d-flex justify-content-center py-5">
+    <div style="width: 6rem; height: 6rem;" class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>

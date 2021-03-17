@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ToneRow } from '../models/ToneRow';
-import { ToneRowMeta, ToneRowService } from '../tone-row.service';
+import { ToneRowMeta } from '../tone-row.service';
 
 export enum ToneRowDisplayOptions {
   FLATS = 1,
@@ -22,7 +22,7 @@ export class ToneRowDisplayComponent implements OnInit {
   composers: string[];
   displaying: ToneRowDisplayOptions;
 
-  constructor(private service: ToneRowService) {
+  constructor() {
     this.details = null;
     this.toneRow = null;
     this.workTitle = null;
@@ -36,17 +36,6 @@ export class ToneRowDisplayComponent implements OnInit {
       this.workTitle = this.details.work? this.details.work.title : null;
       this.composers = this.details.composers ? this.details.composers.map(c => c.name) : [];
     }
-    // if (this.toneRow && this.toneRow.toneRowId && this.toneRow.workId) {
-    //   this.service.getToneRowMeta(this.toneRow.toneRowId)
-    //     .subscribe(meta => {
-    //       if (meta?.work) {
-    //         this.workTitle = meta.work.title;
-    //       }
-    //       if (meta?.composers) {
-    //         this.composers = meta.composers.map(c => c.name);
-    //       }
-    //     })
-    // }
   }
 
   toggleDisplay(option: number) {

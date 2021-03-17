@@ -6,22 +6,36 @@
     </div>
     <div class="modal-body">
         <p>Please add a Title and Composer to your row so that we can keep track of it</p>
-        <form>
+        <form class="row needs-validation">
             <div class="mb-3">
-                <label class="form-label me-2" for="work">
-                    Work Title:
-                    <input class="form-control" type="text" name="work" [(ngModel)]="work">
-                </label>
-                <label class="form-label" for="composer">
-                    Composer Name:
-                    <input class="form-control" type="text" name="composer" [(ngModel)]="composer">
-                </label>
+                <div class="col-6">
+                    <label class="form-label" for="work">
+                        Work Title:
+                    </label>
+                    <div class="input-group has-validation">
+                        <input class="form-control" type="text" name="work" required [(ngModel)]="work">
+                        <div class="invalid-feedback">
+                            Work title is required.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <label class="form-label" for="composer">
+                        Composer Name:
+                    </label>
+                    <div class="input-group has-validation">
+                        <input class="form-control" type="text" name="composer" required [(ngModel)]="composer">
+                        <div class="invalid-feedback">
+                            Composer name is required.
+                        </div>
+                    </div>
+                </div>
             </div>
         </form>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Closed')">Close</button>
-        <button type="button" class="btn btn-primary" (click)="save()">Save changes</button>
+        <button type="button" class="btn btn-primary" (click)="save($event)">Save changes</button>
     </div>
 </ng-template>
 <div class="row text-center mb-3">

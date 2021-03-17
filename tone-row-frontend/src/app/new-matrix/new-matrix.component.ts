@@ -63,7 +63,10 @@ export class NewMatrixComponent implements OnInit {
       result => {}, reason => {});
   }
 
-  save() {
+  save(event: any) {
+    let form = document.getElementsByClassName('needs-validation')[0] as HTMLFormElement;
+    form.classList.add("was-validated");
+
     const composers = this.composer.split(",").map(c => c.trim());
     if (this.newRow.length === 12 && this.composer && this.work) {
       this.trService.postToneRowMeta(this.newRow, composers, this.work)

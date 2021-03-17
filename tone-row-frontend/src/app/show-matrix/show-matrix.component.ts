@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Matrix } from '../models/Matrix';
-import { Note } from '../models/Note';
 import { ToneRowDisplayOptions } from '../tone-row-display/tone-row-display.component';
 import { ToneRowService } from '../tone-row.service';
+
+import { faEdit } from '@fortawesome/free-solid-svg-icons'
 
 @Component({
   selector: 'app-show-matrix',
@@ -16,6 +17,7 @@ export class ShowMatrixComponent implements OnInit {
   workTitle: string | null;
   composers: string[];
   displaying: ToneRowDisplayOptions;
+  editIcon = faEdit;
 
   constructor(
     private modalService: NgbModal,
@@ -30,19 +32,31 @@ export class ShowMatrixComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const routeMap = this.route.snapshot.paramMap;
-    const matrixId = Number(routeMap.get("toneRowId"));
-    if (matrixId) {
-      this.service.getMatrix(matrixId).subscribe(data => this.matrix = data);
-      this.service.getToneRowMeta(matrixId).subscribe(data => {
-        if (data) {
-          let { work, composers } = data;
-          if (work) this.workTitle = work?.title;
-          if (composers) this.composers = composers.map(c => c.name);
-        }
-
-      })
-    }
+    // const routeMap = this.route.snapshot.paramMap;
+    // const matrixId = Number(routeMap.get("toneRowId"));
+    this.route.paramMap.subscribe(params => {
+      const matrixId = Number(params.get("toneRowId"));
+      if (matrixId) {
+        this.service.getMatrix(matrixId).subscribe(data => this.matrix = data);
+        this.service.getToneRowMeta(matrixId).subscribe(data => {
+          if (data) {
+            let { work, composers } = data;
+            if (work) this.workTitle = work?.title;
+            if (composers) this.composers = composers.map(c => c.name);
+          }
+        })
+      }
+    })
+    // if (matrixId) {
+    //   this.service.getMatrix(matrixId).subscribe(data => this.matrix = data);
+    //   this.service.getToneRowMeta(matrixId).subscribe(data => {
+    //     if (data) {
+    //       let { work, composers } = data;
+    //       if (work) this.workTitle = work?.title;
+    //       if (composers) this.composers = composers.map(c => c.name);
+    //     }
+    //   })
+    // }
   }
 
   open(modal: any) {

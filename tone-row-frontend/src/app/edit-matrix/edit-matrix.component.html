@@ -1,0 +1,85 @@
+<ng-template #deleteModal let-modal id="deleteModal">
+    <div class="modal-header">
+        <h5 class="modal-title" id="SaveModalLabel">Are you sure?</h5>
+        <button type="button" class="btn-close" (click)="modal.dismiss('Closed')" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <p>You are about to delete this Matrix and all data associated with it. You cannot change this!</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Closed')">Close</button>
+        <button type="button" class="btn btn-danger" (click)="delete()">I understand</button>
+    </div>
+</ng-template>
+<ng-template #saveModal let-modal id="saveModal">
+    <div class="modal-header">
+        <h5 class="modal-title" id="SaveModalLabel">Save</h5>
+        <button type="button" class="btn-close" (click)="modal.dismiss('Closed')" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <p>Would you like to save these changes?</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Closed')">Close</button>
+        <button type="button" class="btn btn-success">Yes</button>
+    </div>
+</ng-template>
+<div class="row text-center mb-3">
+    <div id="FormContainer" class="position-relative top-0 start-50 translate-middle-x">
+        <form class="row">
+            <div class="col-4">
+                <input class="form-control" type="text" name="work" [ngModel]="workTitle">
+            </div>
+            <span class="col-1">by</span>
+            <div class="col-4">
+                <input class="form-control col-4" type="text" name="composers" [ngModel]="composers">
+            </div>
+            <div class="col-3">
+                <button class="btn btn-danger" (click)="open(deleteModal)">
+                    <fa-icon [icon]="deleteIcon" class="me-2"></fa-icon>
+                    Delete Matrix
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <matrix-display *ngIf="matrix" [tempMatrix]="matrix.matrix" class="col-12"></matrix-display>
+
+    <div class="d-inline-block text-center col-lg-8 col-12">
+        <div class="mb-1 mb-lg-0">
+            <button id="Note-Btn-1" (click)="addToRow($event, 1)" class="note-btn btn btn-secondary m-1">C#</button>
+            <button id="Note-Btn-3" (click)="addToRow($event, 3)" class="note-btn btn btn-secondary m-1">D#</button>
+            <div class="spacer d-inline-block p-lg-4 p-3"></div>
+            <button id="Note-Btn-6" (click)="addToRow($event, 6)" class="note-btn btn btn-secondary m-1">F#</button>
+            <button id="Note-Btn-8" (click)="addToRow($event, 8)" class="note-btn btn btn-secondary m-1">G#</button>
+            <button id="Note-Btn-10" (click)="addToRow($event, 10)" class="note-btn btn btn-secondary m-1">A#</button>
+        </div>
+        <div class="mb-1 mb-lg-0">
+            <button id="Note-Btn-0" (click)="addToRow($event, 0)"
+                class="note-btn btn btn-outline-secondary m-1">C</button>
+            <button id="Note-Btn-2" (click)="addToRow($event, 2)"
+                class="note-btn btn btn-outline-secondary m-1">D</button>
+            <button id="Note-Btn-4" (click)="addToRow($event, 4)"
+                class="note-btn btn btn-outline-secondary m-1">E</button>
+            <button id="Note-Btn-5" (click)="addToRow($event, 5)"
+                class="note-btn btn btn-outline-secondary m-1">F</button>
+            <button id="Note-Btn-7" (click)="addToRow($event, 7)"
+                class="note-btn btn btn-outline-secondary m-1">G</button>
+            <button id="Note-Btn-9" (click)="addToRow($event, 9)"
+                class="note-btn btn btn-outline-secondary m-1">A</button>
+            <button id="Note-Btn-11" (click)="addToRow($event, 11)"
+                class="note-btn btn btn-outline-secondary m-1">B</button>
+        </div>
+    </div>
+    <div class="d-flex flex-lg-column align-items-lg-start align-items-center justify-content-center col-lg-2 col-12">
+        <button (click)="deleteNote()" class="btn btn-primary mb-lg-1 me-2">
+            <!-- <fa-icon [icon]="backIcon" class="me-2"></fa-icon> -->
+            Back
+        </button>
+        <button (click)="open(saveModal)" class="btn btn-success" [disabled]="newRow.length < 12">
+            <fa-icon [icon]="saveIcon" class="me-2"></fa-icon>
+            Save
+        </button>
+    </div>
+
+</div>

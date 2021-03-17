@@ -58,7 +58,7 @@ const search = (text: string, rowList: ToneRowMeta[]): ToneRowMeta[] => {
     const term = text.toLowerCase().trim();
     return tr.composers.map(c => c.name).join(" ").toLowerCase().includes(term)
       || tr.work.title.toLowerCase().includes(term)
-      || tr.toneRow.noteOrder.map(n => n.pitchClass).join('').includes(term)
+      || tr.toneRow.noteOrder.map(n => n.pitchClass === 10 ? "t": n.pitchClass === 11 ? "e" : n.pitchClass).join('').includes(term)
       || tr.toneRow.noteOrder.map(n => n.accidental ? n.flatName : n.naturalName).join('').toLowerCase().includes(term)
       || tr.toneRow.noteOrder.map(n => n.accidental ? n.sharpName : n.naturalName).join('').toLowerCase().includes(term)
   })
@@ -103,9 +103,9 @@ export class ToneRowListComponent implements OnInit {
     })
 
     if (direction === '' || column === '') {
-      this.filteredToneRows = this.allToneRows;
+      this.filteredToneRows = this.filteredToneRows;
     } else {
-      this.filteredToneRows = [...this.allToneRows].sort((a, b) => {
+      this.filteredToneRows = [...this.filteredToneRows].sort((a, b) => {
         const result = compare(a[column], b[column]);
         return direction === 'asc' ? result : -result;
       })

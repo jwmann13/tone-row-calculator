@@ -13,6 +13,7 @@ import { NewMatrixComponent } from './new-matrix/new-matrix.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RowStaffDisplayComponent } from './row-staff-display/row-staff-display.component';
 import { ShowMatrixComponent } from './show-matrix/show-matrix.component';
+import { EditMatrixComponent } from './edit-matrix/edit-matrix.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ShowMatrixComponent } from './show-matrix/show-matrix.component';
     NewMatrixComponent,
     RowStaffDisplayComponent,
     ShowMatrixComponent,
+    EditMatrixComponent,
   ],
   imports: [
     BrowserModule,
