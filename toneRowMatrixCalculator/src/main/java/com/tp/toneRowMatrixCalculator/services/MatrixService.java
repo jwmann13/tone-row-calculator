@@ -1,5 +1,6 @@
 package com.tp.toneRowMatrixCalculator.services;
 
+import com.tp.toneRowMatrixCalculator.controllers.ToneRowMetaRequest;
 import com.tp.toneRowMatrixCalculator.exceptions.InvalidIdException;
 import com.tp.toneRowMatrixCalculator.models.*;
 import com.tp.toneRowMatrixCalculator.daos.*;
@@ -136,8 +137,23 @@ public class MatrixService {
         ToneRow deleted = toneRowDao.deleteToneRowById(id);
         if (deleted == null) throw new InvalidIdException("No Tone Row with that id exists");
 
-        if (toneRowDao.getToneRowsByWorkId(deleted.getWorkId()).size() == 0) {
-            composerWorkDao.deleteComposerWorkByWorkId(deleted.getWorkId());
+        int workDeleteId = deleted.getWorkId();
+        if (toneRowDao.getToneRowsByWorkId(workDeleteId).size() == 0) {
+            List<ComposerWork> workAssociations = composerWorkDao.getComposerWorksByWorkId(workDeleteId);
+            for (ComposerWork cw : workAssociations) {
+                if (cw.getWorkId().equals(deleted.getWorkId())) {
+                    List<ComposerWork> composerAssociations =
+                            composerWorkDao.getComposerWorksByComposerId(cw.getComposerId());
+                    composerWorkDao.deleteComposerWork(
+                            deleted.getWorkId(),
+                            cw.getComposerId()
+                    );
+
+                    if (composerAssociations.size() == 1) {
+                        composerDao.deleteComposerById(cw.getComposerId());
+                    }
+                }
+            }
             workDao.deleteWorkById(deleted.getWorkId());
         }
 
@@ -192,7 +208,7 @@ public class MatrixService {
 
     public List<ComposerWork> getComposerWorksByWorkId(Integer id) {
         List<ComposerWork> toReturn;
-        toReturn = composerWorkDao.getComposerWorkByWorkId(id);
+        toReturn = composerWorkDao.getComposerWorksByWorkId(id);
         return toReturn;
     }
 
@@ -207,7 +223,7 @@ public class MatrixService {
     public ToneRowMeta getToneRowMeta(Integer id) throws InvalidIdException {
         if (id == null) throw new InvalidIdException("Cannot get tonerow with null id");
 
-        ToneRow toMap = toneRowDao.getToneRowById(id);
+        ToneRow toMap = getToneRowById(id);
 
         if (toMap == null) throw new InvalidIdException("No tonerow with id " + id);
         if (toMap.getWorkId() == null) return null;
@@ -260,5 +276,53 @@ public class MatrixService {
         }
 
         return toReturn;
+    }
+
+    public ToneRowMeta updateToneRowMeta(Integer id, ToneRowMetaRequest updatedToneRowDetails) throws InvalidIdException {
+        ToneRowMeta toUpdate = getToneRowMeta(id);
+
+        Work updatedWork = workDao.updateWork(
+                toUpdate.getWork().getWorkId(),
+                updatedToneRowDetails.getWork()
+        );
+
+        List<String> composersToUpdate = updatedToneRowDetails.getComposers();
+        List<Composer> existingComposers = toUpdate.getComposers();
+        List<Composer> updatedComposers = new ArrayList<>();
+        for (int i = 0; i < Math.max(existingComposers.size(), composersToUpdate.size()); i++) {
+            if (i < composersToUpdate.size() && i < existingComposers.size()) {
+                updatedComposers.add(
+                        composerDao.updateComposer(
+                                existingComposers.get(i).getComposerId(),
+                                composersToUpdate.get(i)
+                        )
+                );
+            } else if (i < existingComposers.size()) {
+                int composerDeleteId = existingComposers.get(i).getComposerId();
+                int workDeleteId = updatedWork.getWorkId();
+                if (composerWorkDao.getComposerWorksByComposerId(composerDeleteId).size() == 1) {
+                    composerWorkDao.deleteComposerWork(composerDeleteId, workDeleteId);
+                    composerDao.deleteComposerById(composerDeleteId);
+                }
+            } else {
+                updatedComposers.add(
+                        createComposer(composersToUpdate.get(i))
+                );
+                createComposerWork(updatedWork, updatedComposers.get(i));
+            }
+        }
+
+        noteDao.deleteNotesForToneRow(toUpdate.getToneRow().getToneRowId());
+        Note[] newNotes = createNotesOnToneRow(
+                updatedToneRowDetails.getNoteOrder(),
+                toUpdate.getToneRow().getToneRowId()
+        );
+
+        ToneRow updatedRow = new ToneRow();
+        updatedRow.setNoteOrder(newNotes);
+        updatedRow.setToneRowId(toUpdate.getToneRow().getToneRowId());
+        updatedRow.setWorkId(toUpdate.getWork().getWorkId());
+
+        return new ToneRowMeta(updatedRow, updatedWork, updatedComposers);
     }
 }

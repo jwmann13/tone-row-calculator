@@ -38,4 +38,9 @@ public class WorkInMemDao implements WorkDao {
     public Work deleteWorkById(Integer workId) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public Work updateWork(Integer workId, String work) {
+        return null;
+    }
 }

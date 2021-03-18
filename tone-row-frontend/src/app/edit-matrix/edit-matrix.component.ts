@@ -13,10 +13,10 @@ import { faSave, faTrash } from '@fortawesome/free-solid-svg-icons';
 })
 export class EditMatrixComponent implements OnInit {
   matrix: Matrix | null;
-  workTitle: string;
-  composers: string[];
-  buttonStack: HTMLButtonElement[];
   newRow: number[];
+  workTitle: string;
+  composer: string;
+  buttonStack: HTMLButtonElement[];
   saveIcon = faSave;
   deleteIcon = faTrash;
 
@@ -28,7 +28,7 @@ export class EditMatrixComponent implements OnInit {
   ) {
     this.matrix = null;
     this.workTitle = "";
-    this.composers = [];
+    this.composer = "";
     this.newRow = [];
     this.buttonStack = [];
   }
@@ -55,7 +55,7 @@ export class EditMatrixComponent implements OnInit {
           if (data) {
             let { work, composers } = data;
             if (work) this.workTitle = work.title;
-            if (composers) this.composers = composers.map(c => c.name);
+            if (composers) this.composer = composers.map(c => c.name).join(", ");
           }
         })
       }
@@ -107,6 +107,18 @@ export class EditMatrixComponent implements OnInit {
       this.modalService.dismissAll("Tone Row Saved");
       this.router.navigateByUrl("");
     });
+  }
+
+  update() {
+    const routeMap = this.route.snapshot.paramMap;
+    const matrixId = Number(routeMap.get("toneRowId"));
+    const composers = this.composer.split(",").map(c => c.trim());
+    this.service.updateToneRow(matrixId, this.newRow, composers, this.workTitle)
+    .subscribe((data) => {
+      console.log(data);
+      this.modalService.dismissAll("Tone Row Updated");
+      this.router.navigateByUrl("");
+    })
   }
 
 }

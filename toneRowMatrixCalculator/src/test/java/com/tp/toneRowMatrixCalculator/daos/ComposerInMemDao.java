@@ -33,4 +33,14 @@ public class ComposerInMemDao implements ComposerDao{
     public boolean exists(String composer) {
         return false;
     }
+
+    @Override
+    public Composer deleteComposerById(Integer composerId) {
+        return null;
+    }
+
+    @Override
+    public Composer updateComposer(Integer composerId, String name) {
+        return null;
+    }
 }

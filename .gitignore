@@ -1,3 +1,4 @@
 *.DS_Store
 dbScratch/
 tone-row-db/
+.vscode/

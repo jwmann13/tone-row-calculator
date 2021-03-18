@@ -1,20 +1,7 @@
-<ng-template #deleteModal let-modal id="deleteModal">
-    <div class="modal-header">
-        <h5 class="modal-title" id="SaveModalLabel">Are you sure?</h5>
-        <button type="button" class="btn-close" (click)="modal.dismiss('Closed')" aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-        <p>You are about to delete this Matrix and all data associated with it. You cannot change this!</p>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Closed')">Close</button>
-        <button type="button" class="btn btn-danger" (click)="delete()">I understand</button>
-    </div>
-</ng-template>
 <div class="d-inline-block clear-fix w-100">
     <h4 class="float-start position-absolute start-50 align-middle translate-middle-x">{{workTitle}} by {{composers.join(", ")}}</h4>
-    <button class="btn btn-danger float-end me-3" (click)="open(deleteModal)">Delete Matrix</button>
-    <a *ngIf="matrix" class="btn btn-primary float-end" href="/matrix/edit/{{matrix.primes['P0'].toneRowId}}">
+    <!-- <button class="btn btn-danger float-end me-3" (click)="open(deleteModal)">Delete Matrix</button> -->
+    <a *ngIf="matrix" class="btn btn-primary float-end me-3" href="/matrix/edit/{{matrix.primes['P0'].toneRowId}}">
         <fa-icon [icon]="editIcon" class="me-2"></fa-icon>
         Edit
     </a>

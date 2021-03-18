@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Repository
 @Profile({"production", "daoTesting"})
-public class WorkPostgresDao implements WorkDao{
+public class WorkPostgresDao implements WorkDao {
     @Autowired
     JdbcTemplate template;
 
@@ -100,9 +100,21 @@ public class WorkPostgresDao implements WorkDao{
 
     @Override
     public Work deleteWorkById(Integer workId) {
-        return template.queryForObject("DELETE FROM \"works\" WHERE \"works\".\"workId\" = ?\n" +
-                "RETURNING \"workId\", \"title\";",
+        return template.queryForObject("DELETE FROM \"works\"" +
+                        "WHERE \"works\".\"workId\" = ?\n" +
+                        "RETURNING \"workId\", \"title\";",
                 new WorkMapper(),
+                workId);
+    }
+
+    @Override
+    public Work updateWork(Integer workId, String work) {
+        return template.queryForObject("UPDATE \"works\"\n" +
+                        "SET \"title\" = ?\n" +
+                        "WHERE \"works\".\"workId\" = ?" +
+                        "RETURNING \"workId\", \"title\";",
+                new WorkMapper(),
+                work,
                 workId);
     }
 
@@ -112,7 +124,7 @@ public class WorkPostgresDao implements WorkDao{
         public Work mapRow(ResultSet resultSet, int i) throws SQLException {
             Work mappedWork = new Work();
             mappedWork.setWorkId(resultSet.getInt("workId"));
-            mappedWork.setTitle( resultSet.getString("title"));
+            mappedWork.setTitle(resultSet.getString("title"));
             return mappedWork;
         }
     }

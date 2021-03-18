@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { ToneRow } from './models/ToneRow';
@@ -46,39 +46,24 @@ export class ToneRowService {
 
   getAllToneRows(): Observable<ToneRowMap | null> {
     return this.http.get<ToneRowMap | null>(this.baseURL + "/tonerow", this.httpProperties)
-    .pipe(
-      tap(x => x),
-      catchError(err => {
-        console.log(err);
-        return of(null);
-      })
-    )
-  }
-
-  getToneRow(toneRowId: number): Observable<ToneRow | null> {
-    return this.http.get<ToneRow>(this.baseURL + `/tonerow?id=${toneRowId}`, this.httpProperties)
-    .pipe(
-      tap(x => x),
-      catchError(err => {
-        console.log(err);
-        return of(null);
-      })
-    )
+      .pipe(
+        tap(x => x),
+        catchError(err => {
+          console.log(err);
+          return of(null);
+        })
+      )
   }
 
   getMatrix(toneRowId: number): Observable<Matrix | null> {
     return this.http.get<Matrix>(this.baseURL + `/matrix?id=${toneRowId}`, this.httpProperties)
-    .pipe(
-      tap(x => x),
-      catchError(err => {
-        console.log(err);
-        return of(null);
-      })
-    )
-  }
-
-  postToneRow(newToneRow: object): Observable<ToneRow | null> {
-    return this.http.post<ToneRow>(this.baseURL + "/tonerow", newToneRow, this.httpProperties);
+      .pipe(
+        tap(x => x),
+        catchError(err => {
+          console.log(err);
+          return of(null);
+        })
+      )
   }
 
   getToneRowMeta(toneRowId: number): Observable<ToneRowMeta | null> {
@@ -93,12 +78,12 @@ export class ToneRowService {
 
   getAllToneRowMeta(): Observable<ToneRowMeta[]> {
     return this.http.get<ToneRowMeta[]>(this.baseURL + "/tonerow/meta", this.httpProperties)
-    .pipe(
-      catchError(err => {
-        console.log(err);
-        return of([]);
-      })
-    )
+      .pipe(
+        catchError(err => {
+          console.log(err);
+          return of([]);
+        })
+      )
   }
 
   postToneRowMeta(noteOrder: number[], composers: string[], work: string): Observable<ToneRowMeta | null> {
@@ -115,11 +100,23 @@ export class ToneRowService {
 
   deleteToneRow(id: number): Observable<ToneRow | null> {
     return this.http.delete<ToneRow | null>(this.baseURL + `/tonerow/delete?id=${id}`, this.httpProperties)
-    .pipe(
-      catchError(err => {
-        console.log(err);
-        return of(null);
-      })
-    )
+      .pipe(
+        catchError(err => {
+          console.log(err);
+          return of(null);
+        })
+      )
+  }
+
+  updateToneRow(id: number, noteOrder: number[], composers: string[], work: string): Observable<ToneRowMeta | null> {
+    return this.http.put<ToneRowMeta | null>(this.baseURL + `/tonerow/update?id=${id}`,
+      { noteOrder, work, composers },
+      this.httpProperties)
+      .pipe(
+        catchError(err => {
+          console.log(err);
+          return of(null);
+        })
+      )
   }
 }

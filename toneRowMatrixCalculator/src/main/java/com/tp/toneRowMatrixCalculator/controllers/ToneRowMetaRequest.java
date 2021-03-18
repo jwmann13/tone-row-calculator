@@ -15,7 +15,7 @@ public class ToneRowMetaRequest {
         this.noteOrder = noteOrder;
     }
 
-    public String getWorks() {
+    public String getWork() {
         return work;
     }
 

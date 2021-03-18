@@ -21,18 +21,18 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Closed')">Close</button>
-        <button type="button" class="btn btn-success">Yes</button>
+        <button type="button" class="btn btn-success" (click)="update()">Yes</button>
     </div>
 </ng-template>
 <div class="row text-center mb-3">
     <div id="FormContainer" class="position-relative top-0 start-50 translate-middle-x">
         <form class="row">
             <div class="col-4">
-                <input class="form-control" type="text" name="work" [ngModel]="workTitle">
+                <input class="form-control" type="text" name="work" [(ngModel)]="workTitle">
             </div>
             <span class="col-1">by</span>
             <div class="col-4">
-                <input class="form-control col-4" type="text" name="composers" [ngModel]="composers">
+                <input class="form-control col-4" type="text" name="composer" [(ngModel)]="composer">
             </div>
             <div class="col-3">
                 <button class="btn btn-danger" (click)="open(deleteModal)">

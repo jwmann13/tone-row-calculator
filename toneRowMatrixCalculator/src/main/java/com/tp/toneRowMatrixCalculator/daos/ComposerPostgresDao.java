@@ -98,13 +98,33 @@ public class ComposerPostgresDao implements ComposerDao {
         return getComposerByName(composer) != null;
     }
 
+    @Override
+    public Composer deleteComposerById(Integer composerId) {
+        return template.queryForObject("DELETE FROM \"composers\"" +
+                        "WHERE \"composers\".\"composerId\" = ?\n" +
+                        "RETURNING \"composerId\", \"name\";",
+                new ComposerMapper(),
+                composerId);
+    }
+
+    @Override
+    public Composer updateComposer(Integer composerId, String name) {
+        return template.queryForObject("UPDATE \"composers\"\n" +
+                        "SET \"name\" = ?\n" +
+                        "WHERE \"composers\".\"composerId\" = ?" +
+                        "RETURNING \"composerId\", \"name\";",
+                new ComposerMapper(),
+                name,
+                composerId);
+    }
+
     public static class ComposerMapper implements RowMapper<Composer> {
 
         @Override
         public Composer mapRow(ResultSet resultSet, int i) throws SQLException {
             Composer mappedWork = new Composer();
             mappedWork.setComposerId(resultSet.getInt("composerId"));
-            mappedWork.setName( resultSet.getString("name"));
+            mappedWork.setName(resultSet.getString("name"));
             return mappedWork;
         }
     }

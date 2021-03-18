@@ -223,4 +223,15 @@ public class MatrixController {
         return ResponseEntity.ok(deleted);
     }
 
+    @PutMapping(value = "tonerow/update", params = {"id"})
+    public ResponseEntity updateToneRow(@RequestParam Integer id, @RequestBody ToneRowMetaRequest updatedToneRowDetails) {
+        ToneRowMeta updated;
+        try {
+            updated = service.updateToneRowMeta(id, updatedToneRowDetails);
+        } catch (InvalidIdException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+        return ResponseEntity.ok(updated);
+    }
+
 }

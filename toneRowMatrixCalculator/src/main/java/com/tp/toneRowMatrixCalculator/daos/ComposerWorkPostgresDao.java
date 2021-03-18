@@ -44,10 +44,24 @@ public class ComposerWorkPostgresDao implements ComposerWorkDao {
     }
 
     @Override
-    public List<ComposerWork> getComposerWorkByWorkId(Integer workId) {
+    public List<ComposerWork> getComposerWorksByWorkId(Integer workId) {
         List<ComposerWork> results = template.query("SELECT * FROM \"composerWorks\" WHERE \"workId\" = ?;",
                 new ComposerWorkMapper(),
                 workId
+        );
+
+        if (results.isEmpty()) {
+            return null;
+        } else {
+            return results;
+        }
+    }
+
+    @Override
+    public List<ComposerWork> getComposerWorksByComposerId(Integer composerId) {
+        List<ComposerWork> results = template.query("SELECT * FROM \"composerWorks\" WHERE \"composerId\" = ?;",
+                new ComposerWorkMapper(),
+                composerId
         );
 
         if (results.isEmpty()) {
@@ -69,11 +83,15 @@ public class ComposerWorkPostgresDao implements ComposerWorkDao {
     }
 
     @Override
-    public ComposerWork deleteComposerWorkByWorkId(Integer workId) {
-        return template.queryForObject("DELETE FROM \"composerWorks\" WHERE \"composerWorks\".\"workId\" = ?\n" +
+    public ComposerWork deleteComposerWork(Integer workId, Integer composerId) {
+        return template.queryForObject("DELETE FROM \"composerWorks\"" +
+                        "WHERE \"composerWorks\".\"workId\" = ?" +
+                        "AND \"composerWorks\".\"composerId\" = ?\n" +
                         "RETURNING \"workId\", \"composerId\";",
                 new ComposerWorkMapper(),
-                workId);
+                workId,
+                composerId
+        );
     }
 
     private static class ComposerWorkMapper implements RowMapper<ComposerWork> {

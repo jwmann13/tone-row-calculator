@@ -12,9 +12,14 @@ import java.util.List;
 @Profile({"production", "daoTesting", "serviceTesting"})
 public interface ComposerWorkDao {
     boolean exists(Integer workId, Integer composerId);
+
     ComposerWork getComposerWork (Integer workId, Integer composerId);
-    List<ComposerWork> getComposerWorkByWorkId (Integer workId);
+
+    List<ComposerWork> getComposerWorksByWorkId(Integer workId);
+
+    List<ComposerWork> getComposerWorksByComposerId(Integer composerId);
+
     ComposerWork createComposerWork(Work work, Composer composer);
 
-    ComposerWork deleteComposerWorkByWorkId(Integer workId);
+    ComposerWork deleteComposerWork(Integer workId, Integer composerId);
 }

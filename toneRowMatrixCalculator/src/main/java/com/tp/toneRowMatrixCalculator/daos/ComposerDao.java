@@ -19,4 +19,8 @@ public interface ComposerDao {
     Composer getComposerByName(String composer);
 
     boolean exists(String composer);
+
+    Composer deleteComposerById(Integer composerId);
+
+    Composer updateComposer(Integer composerId, String name);
 }

@@ -21,4 +21,6 @@ public interface WorkDao {
     boolean exists(String workTitle);
 
     Work deleteWorkById(Integer workId);
+
+    Work updateWork(Integer workId, String work);
 }
